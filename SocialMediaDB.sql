@@ -61,6 +61,5 @@ CREATE TABLE PROFILE (
     user_id int PRIMARY KEY,
     date_of_birth DATE not null,
     sex varchar(30),
-    sexes ENUM('Male', 'Female', 'Others', 'PreferNotToSay'),
-    education varchar(1000)
+    sexes ENUM('Male', 'Female', 'Others', 'PreferNotToSay')
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
