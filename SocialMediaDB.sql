@@ -61,5 +61,6 @@ CREATE TABLE PROFILE (
     user_id int PRIMARY KEY,
     date_of_birth DATE not null,
     sex varchar(30),
-    sexes ENUM('Male', 'Female', 'Others', 'PreferNotToSay')
+    sexes ENUM('Male', 'Female', 'Others', 'PreferNotToSay'),
+    CONSTRAINT OWNS_PROFILE FOREIGN KEY (user_id) REFERENCES USER (user_id) on DELETE CASCADE on UPDATE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
