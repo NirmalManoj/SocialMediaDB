@@ -34,8 +34,6 @@ CREATE TABLE COMMENT(
     time TIMESTAMP not NULL,
     text TEXT,
     media VARCHAR(10000),
-    user_id int not null,
-    CONSTRAINT OWNS_COMMENT FOREIGN KEY (user_id) REFERENCES USER (user_id) on DELETE CASCADE on UPDATE CASCADE,
     CONSTRAINT CONTENT_PRESENT_IN_COMMENT CHECK (text is NOT NULL OR media is NOT NULL)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
@@ -66,4 +64,3 @@ CREATE TABLE PROFILE (
     sexes ENUM('Male', 'Female', 'Others', 'PreferNotToSay'),
     education varchar(1000)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
-
