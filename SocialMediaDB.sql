@@ -63,15 +63,14 @@ insert into COMMENT VALUES(NULL, '2020-10-03 12:00:10', "Amazing work..", NULL);
 DROP TABLE IF EXISTS STORIES;
 CREATE TABLE STORIES(
     story_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    time TIMESTAMP,
+    time DATETIME,
     text TEXT,
     media VARCHAR(10000),
     user_id int not null,
     CONSTRAINT OWNS_STORY FOREIGN KEY (user_id) REFERENCES USER (user_id) on DELETE CASCADE on UPDATE CASCADE,
     CONSTRAINT CONTENT_PRESENT_IN_STORY CHECK (text is NOT NULL OR media is NOT NULL)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
-
-
+insert into STORIES VALUES(NULL, '2020-10-03 15:00:00', "Hey, what a horrific day", "https://st.depositphotos.com/1006250/1214/i/950/depositphotos_12141968-stock-photo-dry-field-road-in-the.jpg", 1);
 
 DROP TABLE IF EXISTS MESSAGE;
 CREATE TABLE MESSAGE(
@@ -384,12 +383,14 @@ insert into SENDS_GENERAL VALUES(1, 1, 7);
 DROP TABLE IF EXISTS RESPONDS;
 CREATE TABLE RESPONDS (
     reacter_id INT NOT NULL ,
-    story_id INT NOT NULL,
+    story_id INT NOT NULL,reacted_type ENUM('Like', 'Haha', 'Heart', 'Angry', 'Wow', 'Dislike'),
     FOREIGN KEY (reacter_id) REFERENCES USER(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (story_id) REFERENCES STORIES(story_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    PRIMARY KEY(reacter_id,story_id),
-    reacted_type ENUM('Like', 'Haha', 'Heart', 'Angry', 'Wow', 'Dislike')
+    PRIMARY KEY(reacter_id,story_id)
 );
+
+insert into RESPONDS VALUES(2, 1, 2);
+insert into RESPONDS VALUES(3, 1, 5);
 
 DROP TABLE IF EXISTS SHARES;
 CREATE TABLE SHARES (
