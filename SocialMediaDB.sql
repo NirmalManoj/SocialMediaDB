@@ -45,6 +45,21 @@ CREATE TABLE COMMENT(
     CONSTRAINT CONTENT_PRESENT_IN_COMMENT CHECK (text is NOT NULL OR media is NOT NULL)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
+insert into COMMENT VALUES(NULL, '2020-10-03 10:00:01', "That is very funny, nirmal!", NULL); -- Mod to Nirmal
+-- [comment 1]
+insert into COMMENT VALUES(NULL, '2020-10-03 10:00:01', "Are you so jobless?!", NULL); -- Pin to Nirmal
+-- [comment 2]
+insert into COMMENT VALUES(NULL, '2020-10-03 12:00:09', "Nice work!", "https://en.pimg.jp/047/504/690/1/47504690.jpg"); -- Mod to Pin
+-- [comment 3]
+insert into COMMENT VALUES(NULL, '2020-10-03 14:00:00', "Congrats on finishing this!", NULL); -- Pin to Mod
+-- [comment 4]
+insert into COMMENT VALUES(NULL, '2020-10-03 14:20:00', "Thanks:)", NULL); -- Mod to Pin
+-- [comment 5]
+insert into COMMENT VALUES(NULL, '2020-10-03 14:00:05', NULL, "https://blog.award.co/hubfs/Thankyou.png"); -- Pin to Mod, thank you msg.
+-- [comment 6]
+insert into COMMENT VALUES(NULL, '2020-10-03 12:00:10', "Amazing work..", NULL); -- Nirmal to Pin   
+-- [comment 7]
+
 DROP TABLE IF EXISTS STORIES;
 CREATE TABLE STORIES(
     story_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -190,6 +205,14 @@ CREATE TABLE COMMENTS (
     FOREIGN KEY (post_id) REFERENCES POST(post_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+insert into COMMENTS VALUES(1, 3, 1);
+insert into COMMENTS VALUES(2, 2, 1);
+insert into COMMENTS VALUES(3, 3, 2);
+insert into COMMENTS VALUES(4, 2, 3);
+insert into COMMENTS VALUES(5, 3, 3);
+insert into COMMENTS VALUES(6, 2, 2);
+insert into COMMENTS VALUES(7, 1, 2);
+
 DROP TABLE IF EXISTS FOLLOWS;
 CREATE TABLE FOLLOWS (
     follower_id INT NOT NULL ,
@@ -198,16 +221,32 @@ CREATE TABLE FOLLOWS (
     FOREIGN KEY (following_id) REFERENCES USER(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY(follower_id,following_id)
 );
+-- follower_id follows the user with following_id
+insert into FOLLOWS VALUES(2, 1);
+insert into FOLLOWS VALUES(3, 1);
+insert into FOLLOWS VALUES(1, 2);
+insert into FOLLOWS VALUES(3, 2);
+insert into FOLLOWS VALUES(1, 3);
+insert into FOLLOWS VALUES(2, 3);
 
 DROP TABLE IF EXISTS MAKES_GENERAL_REACT;
 CREATE TABLE MAKES_GENERAL_REACT (
     user_id INT NOT NULL ,
     post_id INT NOT NULL,
+    reacted_type ENUM('Like', 'Haha', 'Heart', 'Angry', 'Wow', 'Dislike'),
     FOREIGN KEY (user_id) REFERENCES USER(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (post_id) REFERENCES POST(post_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    PRIMARY KEY(user_id,post_id),
-    reacted_type ENUM('Like', 'Haha', 'Heart', 'Angry', 'Wow', 'Dislike')
+    PRIMARY KEY(user_id,post_id)
 );
+--                          (user_liking_post, post, reactType)
+insert into MAKES_GENERAL_REACT VALUES(1, 2, 3); -- Heart react
+insert into MAKES_GENERAL_REACT VALUES(1, 3, 1); 
+insert into MAKES_GENERAL_REACT VALUES(1, 4, 1);
+
+insert into MAKES_GENERAL_REACT VALUES(2, 3, 1);
+
+insert into MAKES_GENERAL_REACT VALUES(3, 2, 1);
+insert into MAKES_GENERAL_REACT VALUES(3, 4, 1);
 
 DROP TABLE IF EXISTS LIKES;
 CREATE TABLE LIKES (
@@ -249,11 +288,17 @@ DROP TABLE IF EXISTS MAKES_A_REACT;
 CREATE TABLE MAKES_A_REACT (
     user_id INT NOT NULL ,
     comment_id INT NOT NULL,
+    reacted_type ENUM('Like', 'Haha', 'Heart', 'Angry', 'Wow', 'Dislike'),
     FOREIGN KEY (user_id) REFERENCES USER(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (comment_id) REFERENCES COMMENT(comment_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    PRIMARY KEY(user_id,comment_id),
-    reacted_type ENUM('Like', 'Haha', 'Heart', 'Angry', 'Wow', 'Dislike')
+    PRIMARY KEY(user_id,comment_id)
 );
+--                  (user_liking_comment, comment, reactType)
+insert into MAKES_A_REACT VALUES(1, 1, 2);
+insert into MAKES_A_REACT VALUES(1, 2, 4);
+insert into MAKES_A_REACT VALUES(2, 3, 3);
+insert into MAKES_A_REACT VALUES(3, 4, 3);
+insert into MAKES_A_REACT VALUES(2, 7, 3);
 
 DROP TABLE IF EXISTS MENTIONS;
 CREATE TABLE MENTIONS (
@@ -265,6 +310,9 @@ CREATE TABLE MENTIONS (
     FOREIGN KEY (comment_id) REFERENCES COMMENT(comment_id) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY(comment_id,mentioner_id,mentionee_id)
 );
+
+insert into MENTIONS VALUES(3, 2, 5); -- Modi mentions pinarayi in thanks message.
+insert into MENTIONS VALUES(2, 3, 6); -- Pinarayi mentions Modi in thanks message.
 
 DROP TABLE IF EXISTS SENDS_SPECIFIC;
 CREATE TABLE SENDS_SPECIFIC (
@@ -318,3 +366,4 @@ CREATE TABLE IS_TAGGED (
     PRIMARY KEY(user_id,post_id)
 );
 
+insert into IS_TAGGED VALUES(3, 4); -- Pinarayi tags modi on WearMask post.
