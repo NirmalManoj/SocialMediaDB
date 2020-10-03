@@ -3,7 +3,7 @@ CREATE DATABASE social_media;
 USE social_media;
 
 DROP TABLE IF EXISTS USER;
-CREATE TABLE USER (
+CREATE TABLE USER ( -- Done
     user_id INT NOT NULL AUTO_INCREMENT primary key,
     password varchar(120) NOT NULL,
     name varchar(50) NOT NULL,
@@ -19,7 +19,7 @@ insert into USER VALUES(NULL, '#PinRaYI', 'Pinarayi Vijayan',  'cmo@kerala.gov.i
 insert into USER VALUES(NULL, 'Chowkeedar', 'Narendra Modi',  'pm@gov.in', '7 Lok Kalyan Marg, New Delhi', 1111111111, '100:00:04');
 
 DROP TABLE IF EXISTS POST;
-CREATE TABLE POST (
+CREATE TABLE POST ( -- Done
     post_id int not null AUTO_INCREMENT,
     time TIMESTAMP not null,
     text TEXT,
@@ -37,7 +37,7 @@ insert into POST VALUES(NULL, '2020-10-03 09:00:01', "Today, I will be inaugurat
 insert into POST VALUES(NULL, '2020-10-03 16:00:01', NULL, "https://d3nuqriibqh3vw.cloudfront.net/attachment-4_resized_0.jpg?Y82N9g17xw0FhDEVnmX8nAs96cyHP.w6", 2);
 
 DROP TABLE IF EXISTS COMMENT;
-CREATE TABLE COMMENT(
+CREATE TABLE COMMENT( -- Done
     comment_id int not null AUTO_INCREMENT PRIMARY KEY,
     time TIMESTAMP not NULL,
     text TEXT,
@@ -61,7 +61,7 @@ insert into COMMENT VALUES(NULL, '2020-10-03 12:00:10', "Amazing work..", NULL);
 -- [comment 7]
 
 DROP TABLE IF EXISTS STORIES;
-CREATE TABLE STORIES(
+CREATE TABLE STORIES( -- Done
     story_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     time DATETIME,
     text TEXT,
@@ -239,7 +239,7 @@ insert into COMMENTS VALUES(6, 2, 2);
 insert into COMMENTS VALUES(7, 1, 2);
 
 DROP TABLE IF EXISTS FOLLOWS;
-CREATE TABLE FOLLOWS (
+CREATE TABLE FOLLOWS ( -- Done
     follower_id INT NOT NULL ,
     following_id INT NOT NULL,
     FOREIGN KEY (follower_id) REFERENCES USER(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -247,7 +247,7 @@ CREATE TABLE FOLLOWS (
     PRIMARY KEY(follower_id,following_id)
 );
 -- follower_id follows the user with following_id
-insert into FOLLOWS VALUES(2, 1);
+-- insert into FOLLOWS VALUES(2, 1);
 insert into FOLLOWS VALUES(3, 1);
 insert into FOLLOWS VALUES(1, 2);
 insert into FOLLOWS VALUES(3, 2);
@@ -255,7 +255,7 @@ insert into FOLLOWS VALUES(1, 3);
 insert into FOLLOWS VALUES(2, 3);
 
 DROP TABLE IF EXISTS MAKES_GENERAL_REACT;
-CREATE TABLE MAKES_GENERAL_REACT (
+CREATE TABLE MAKES_GENERAL_REACT ( -- Done
     user_id INT NOT NULL ,
     post_id INT NOT NULL,
     reacted_type ENUM('Like', 'Haha', 'Heart', 'Angry', 'Wow', 'Dislike'),
@@ -274,7 +274,7 @@ insert into MAKES_GENERAL_REACT VALUES(3, 2, 1);
 insert into MAKES_GENERAL_REACT VALUES(3, 4, 1);
 
 DROP TABLE IF EXISTS LIKES;
-CREATE TABLE LIKES (
+CREATE TABLE LIKES ( -- Done
     user_id INT NOT NULL ,
     page_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES USER(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -283,7 +283,7 @@ CREATE TABLE LIKES (
 );
 
 DROP TABLE IF EXISTS BELONGS_TO;
-CREATE TABLE BELONGS_TO (
+CREATE TABLE BELONGS_TO ( -- Dine
     user_id INT NOT NULL ,
     group_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES USER(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -300,7 +300,7 @@ insert INTO BELONGS_TO VALUES(2, 3);
 insert INTO BELONGS_TO VALUES(3, 3);
 
 DROP TABLE IF EXISTS IS_ADMIN;
-CREATE TABLE IS_ADMIN (
+CREATE TABLE IS_ADMIN ( -- Done
     user_id INT NOT NULL ,
     group_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES USER(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -327,7 +327,7 @@ insert into IS_MODERATOR VALUES(2, 1);
 insert into IS_MODERATOR VALUES(1, 2);
 
 DROP TABLE IF EXISTS MAKES_A_REACT;
-CREATE TABLE MAKES_A_REACT (
+CREATE TABLE MAKES_A_REACT ( -- Done
     user_id INT NOT NULL ,
     comment_id INT NOT NULL,
     reacted_type ENUM('Like', 'Haha', 'Heart', 'Angry', 'Wow', 'Dislike'),
@@ -343,7 +343,7 @@ insert into MAKES_A_REACT VALUES(3, 4, 3);
 insert into MAKES_A_REACT VALUES(2, 7, 3);
 
 DROP TABLE IF EXISTS MENTIONS;
-CREATE TABLE MENTIONS (
+CREATE TABLE MENTIONS ( -- Done
     mentioner_id INT NOT NULL ,
     mentionee_id INT NOT NULL,
     comment_id INT NOT NULL,

@@ -2,7 +2,21 @@ import subprocess as sp
 import pymysql
 import pymysql.cursors
 from tabulate import tabulate
+from time import time
+from datetime import datetime
+import time
+import datetime
 
+def getCurrentTimeStamp():
+    ts = time.time()
+    return datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+
+def isNonEmptyQuery(query):
+    cur.execute(query)
+    con.commit()
+    if cur.rowcount == 0:
+        return False
+    return True
 
 def viewTable(rows):
 
@@ -142,6 +156,345 @@ def viewOptions():
 
 
 
+def addUser():
+    global cur
+    user = {}
+    print("Enter the details of the user:")
+
+    user["name"] = input("Please provide name of the user:")
+    user["email"] = input("Please provide the email id of the user:")
+    user["password"] = input("Please provide the password:")
+    user["address"] = input("Please provide the address:")
+    user["phone"] = input("Please enter the phone number [without space or hyphen]")
+
+    try:
+        query = "INSERT INTO USER VALUES(NULL, '%s','%s','%s','%s',%s, '00:00:00')" %(user["password"],user["name"],user["email"],user["address"],user["phone"])   
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        cur.rollback()
+        print(e)
+        print("Invalid data! :( \n") 
+   
+
+def addProfile():
+    print("Enter the profile details of the user:")
+    profile = {}
+    # try:
+    #     query = "SELECT user_id FROM USER WHERE password='%s' AND name='%s' AND email='%s'" %(user['password'],user['name'],user['email'])
+    #     cur.execute(query)
+    #     profile["user_id"] = cur.fetchone()[0]
+    # except Exception as e:
+    #     cur.rollback()
+    #     print(e)
+    #     print("Something went wrong")
+    profile['user_id'] = input("Enter user id of the user: ")
+    profile['dob'] = input("Enter Date-of-Birth in YYYY-MM-DD format: ")
+    profile['sex'] = input("Enter sex of the use [Male, Female, Others, PreferNotToSay]: ")
+
+    try:
+        query = "INSERT INTO PROFILE VALUES (%s,'%s','%s')" %(profile["user_id"],profile["dob"],profile["sex"])
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        cur.rollback()
+        print(e)
+        print("Invalid data! :( \n")
+
+def addPost():
+    global cur
+    post = {}
+
+    post['user_id'] = input("Enter the user ID:")
+    # ts = time.time()
+    post['time'] = getCurrentTimeStamp()
+    post['text'] = input("Enter the post text:")
+    post['media'] = input("Enter media associated with the post")
+    
+    try:
+        query = "INSERT INTO POST VALUES (NULL, '%s', '%s', '%s', %s)" %(post["time"], post["text"], post["media"], post["user_id"])
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        cur.rollback()
+        print(e)
+        print("Invalid data! :( \n")
+
+
+def addComment():
+    global cur
+    row = {}
+    row["time"] = getCurrentTimeStamp()
+    row["text"] = input("Enter the comment: ")
+    row["media"] = input("Enter the link to the media: ")
+
+    # Reminder: Do the following check in all valid places.
+    if len(row["text"]) == 0 and len (row["media"]) == 0:
+        print("You can't make an empty comment!")
+        return
+
+    try:
+        query = "INSERT INTO COMMENT VALUES(NULL, '%s', '%s', '%s');" %(row["time"], row["text"], row["media"])
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        cur.rollback()
+        print(e)
+        print("Error: Check your inputs.")
+    return
+
+
+def addStory():
+    global cur
+    row = {}
+    row["time"] = getCurrentTimeStamp()
+    row["text"] = input("Enter what's shared in the story: ")
+    row["media"] = input("Enter the link to media shared in the story: ")
+    row["user_id"] = input("Enter the ID of the user who made this story: ")
+
+    if len(row["text"]) == 0 and len (row["media"]) == 0:
+        print("You can't make an empty story with no text and no media!")
+        return
+
+    try:
+        query = "INSERT INTO STORIES VALUES(NULL, '%s', '%s', '%s', %s);" % (row["time"], row["text"], row["media"], row["user_id"])
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        cur.rollback()
+        print(e)
+        pritn("Error: Check you inputs.")
+    return
+
+
+
+# def isValidUserID(user_id):
+#     cur.execute("SELECT user_id from USER where user_id=%s;" % (user_id))
+#     con.commit()
+#     if cur.rowcount == 0:
+#         return False
+#     return True
+
+def addFollows():
+    global cur
+
+    row = {}
+    row["follower_id"] = input("Enter user ID of the person that wants to follow someone: ")
+    # if isValidUserID(row["follower_id"]) == False:
+    #     print("Invalid user_id")
+    #     return
+    row["following_id"] = input("Enter the user ID of the person that will be followed by the former person: ")
+    # if isValidUserID(row["follower_id"]) == False:
+    #     print("Invalid user_id")
+    #     return
+    try:
+        query = "INSERT INTO FOLLOWS(follower_id, following_id) VALUES(%s, %s);" % (row["follower_id"], row["following_id"])
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        print("Error: This is not a valid query! \n")
+        return
+    return
+
+
+def addMakesGeneralReact():
+    global cur
+    row = {}
+
+    # try:
+    row["post_id"] = input("Enter the POST ID: ")
+    # except Exception as e:
+    #     print("Invalid POST ID")
+    # try:
+    row["user_id"] = input("Enter your USER ID: ")
+    # except Exception as e:
+    #     print("Invalid USER ID")
+
+    print("Choose the react type by pressing the corresponding number")
+    print("1 . Like")
+    print("2 . Dislike")
+    print("3 . Wow")
+    print("4 . Heart")
+    print("5 . Angry")
+    print("6 . Haha")
+    reactNum = 123
+    try:
+        reactNum = int(input())
+    except:
+        print("Invalid react Type")
+
+    if reactNum == 1:
+        row["reactedType"]="Like"
+    elif reactNum == 2:
+        row["reactedType"]="Dislike"
+    elif reactNum == 3:
+        row["reactedType"]="Wow"
+    elif reactNum == 4:
+        row["reactedType"]="Heart"
+    elif reactNum == 5:
+        row["reactedType"]="Angry"
+    elif reactNum == 6:
+        row["reactedType"]="Haha"
+    else :
+        print("Invalid react Type")
+        return
+    try:
+        query = "INSERT INTO MAKES_GENERAL_REACT(post_id, user_id, reacted_type) VALUES(%s, %s, '%s');" % (
+            row["post_id"], row["user_id"],row["reactedType"])
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        cur.rollback()
+        print("Error: PLEASE TRY AGAIN WITH DIFFERENT DATA!\n")
+        return
+    return
+
+def addLikes():
+    global cur
+    row = {}
+    # try:
+    row["page_id"] = input("Enter the user ID: ")
+    row["user_id"] = input("Enter the page ID of the page to like: ")
+    # except Exception as e:
+    #     print("Invalid USER ID")
+    try:
+        query = "INSERT INTO LIKES(page_id, user_id) VALUES(%s, %s);" % (
+            row["page_id"], row["user_id"])
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        cur.rollback()
+        print("Error: PLEASE TRY AGAIN WITH DIFFERENT DATA!\n")
+        return
+    return
+
+def addUserToGroup():
+    global cur
+    row = {}
+    row["user_id"] = input("Enter the ID of the user who wants to join a group: ")
+    row["group_id"] = input("Enter the ID of the group that the user wants to join: ")
+    try:
+        query = "INSERT INTO BELONGS_TO VALUES(%s, %s);" % (row["user_id"], row["group_id"])
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        cur.rollback()
+        print("Error: Check your inputs.")
+        return
+    return
+
+def makeUserAdmin():
+    global cur
+    row = {}
+    row["user_id"] = input("Enter the name of the user to make him an admin of a group: ")
+    row["group_id"] = input("Enter the name of the group for which user should be made an admin of: ")
+    # Don't we have to check if the user is a member of the group?
+    query = "SELECT * FROM BELONGS_TO where group_id=%s and user_id=%s;" % (row["group_id"], row["user_id"])
+    if isNonEmptyQuery(query) == False:
+        print("User doesn't belong to the group")
+        return
+    try:
+        query = "INSERT INTO IS_ADMIN VALUES(%s, %s);" (row["user_id"], row["group_id"])
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        cur.rollback()
+        print("Error: Check your inputs.")
+        return
+    return
+
+def makeUserModerator():
+    global cur
+    row = {}
+    row["user_id"] = input("Enter the ID of the user to make him an moderator of a group: ")
+    row["group_id"] = input("Enter the ID of the group for which user should be made an moderator of: ")
+    # Don't we have to check if the user is a member of the group?
+    query = "SELECT * FROM BELONGS_TO where group_id=%s and user_id=%s;" % (row["group_id"], row["user_id"])
+    if isNonEmptyQuery(query) == False:
+        print("User doesn't belong to the group")
+        return
+    try:
+        query = "INSERT INTO IS_MODERATOR VALUES(%s, %s);" (row["user_id"], row["group_id"])
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        cur.rollback()
+        print("Error: Check your inputs.")
+        return
+    return
+
+def makeReactionToAComment():
+    global cur
+    row = {}
+    row["user_id"] = input("Enter the ID of the user who made the reaction: ")
+    row["comment_id"] = input("Enter the ID of the comment in which the reaction was made: ")
+    print("Choose the react type by pressing the corresponding number")
+    print("1 . Like")
+    print("2 . Dislike")
+    print("3 . Wow")
+    print("4 . Heart")
+    print("5 . Angry")
+    print("6 . Haha")
+    reactNum = 123
+    try:
+        reactNum = int(input())
+    except:
+        print("Invalid react Type")
+
+    if reactNum == 1:
+        row["reactedType"]="Like"
+    elif reactNum == 2:
+        row["reactedType"]="Dislike"
+    elif reactNum == 3:
+        row["reactedType"]="Wow"
+    elif reactNum == 4:
+        row["reactedType"]="Heart"
+    elif reactNum == 5:
+        row["reactedType"]="Angry"
+    elif reactNum == 6:
+        row["reactedType"]="Haha"
+    else :
+        print("Invalid react Type")
+        return
+    
+    try:
+        query = "INSERT INTO MAKES_A_REACT(comment_id, user_id, reacted_type) VALUES(%s, %s, '%s');" % (
+            row["comment_id"], row["user_id"],row["reactedType"])
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        cur.rollback()
+        print("Error: PLEASE TRY AGAIN WITH DIFFERENT DATA!\n")
+        return
+    return
+
+def mentionInComment():
+    global cur
+    row = {}
+    row["comment_id"] = input("Enter the ID of the comment: ")
+    row["mentioner_id"] = input("Enter the ID of the user who mentioned someone: ")
+    row["mentionee_id"] = input("Enter the ID of the user who got mentioned: ")
+    try:
+        query = "INSERT INTO MENTIONS VALUES(%s, %s, %s);" (row["mentioner_id"], row["mentionee_id"], row["comment_id"])
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        cur.rollback()
+        print("Error: Check your inputs.")
+        return
+    return
+
+
+
+def insertionOptions():
+    print("Enter what you want to insert\n")
+
+
+
+
+
+
+
 def refreshDatabase():
     global cur
 
@@ -172,6 +525,12 @@ while(1):
         tmp = input("Enter any key to CONTINUE>")
         continue
 
+    # print("hi\n")
+    # ts = time.time()
+    # asdf = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+    # print("HI: %s\n" %(asdf))
+    # input("hisd")
+    # # print(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
     with con.cursor() as cur:
         exitflag = 0
         while(1):
@@ -179,20 +538,30 @@ while(1):
             refreshDatabase()
             print("CHOOSE AN OPTION\n")
             print("1.View Options")
-            print("2.Addition Options")
+            print("2.Insertion Options")
             print("3.Deletion Options")
             print("4.Modify Options")
             print("5.Quit")
             inp = input("\nENTER: ")
             if(inp == '1'):
+                # addUser()
+                # addProfile()
+                # addPost()
+                # addFollows()
+
+                # addMakesGe    neralReact()
+                # addComment()
+                addStory()
+                # addLikes()
                 viewOptions()
+            elif(inp == '2'):
+                insertionOptions()
             elif(inp == '5'):
                 exitflag = 1
                 print("Exiting.")
                 break
             
-            print("Press enter to continue ... ")
-            input()
+            input("Press enter to continue: ")
 
     if exitflag == 1:
         break
