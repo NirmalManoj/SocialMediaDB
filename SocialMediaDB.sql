@@ -79,6 +79,17 @@ CREATE TABLE MESSAGE(
     text TEXT not null
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
+insert into MESSAGE VALUES(NULL, "Bhaisaheb.. we need funds.");
+-- insert into MESSAGE VALUES();
+insert into MESSAGE VALUES(NULL, "Bhai bhai.. please wait. I'm working on it.");
+insert into MESSAGE VALUES(NULL, "Hmm..");
+insert into MESSAGE VALUES(NULL, "xD");
+
+insert into MESSAGE VALUES(NULL, "Meri pyaari deshvasyon, you are doomed!");
+insert into MESSAGE VALUES(NULL, "Irresponsible decision.");
+insert into MESSAGE VALUES(NULL, "I knew it.");
+-- insert into MESSAGE VALUES();
+
 DROP TABLE IF EXISTS PROFILE;
 CREATE TABLE PROFILE (
     user_id int PRIMARY KEY,
@@ -193,6 +204,13 @@ CREATE TABLE social_media.GROUP (
     group_name varchar(50) NOT NULL,
     group_privacy ENUM('Public', 'Private', 'Secret')
 );
+
+insert into social_media.GROUP VALUES(NULL, "India", 1);
+insert into social_media.GROUP VALUES(NULL, "Kerala", 1);
+insert into social_media.GROUP VALUES(NULL, "Representatives", 3);
+-- insert into social_media.GROUP VALUES();
+
+
 -- relationships
 
 DROP TABLE IF EXISTS COMMENTS;
@@ -266,6 +284,14 @@ CREATE TABLE BELONGS_TO (
     PRIMARY KEY(user_id,group_id)
 );
 
+insert INTO BELONGS_TO VALUES(1, 1);
+insert INTO BELONGS_TO VALUES(2, 1);
+insert INTO BELONGS_TO VALUES(3, 1);
+insert INTO BELONGS_TO VALUES(1, 2);
+insert INTO BELONGS_TO VALUES(2, 2);
+insert INTO BELONGS_TO VALUES(2, 3);
+insert INTO BELONGS_TO VALUES(3, 3);
+
 DROP TABLE IF EXISTS IS_ADMIN;
 CREATE TABLE IS_ADMIN (
     user_id INT NOT NULL ,
@@ -275,6 +301,12 @@ CREATE TABLE IS_ADMIN (
     PRIMARY KEY(user_id,group_id)
 );
 
+insert into IS_ADMIN VALUES(3, 1);
+insert into IS_ADMIN VALUES(2, 2);
+insert into IS_ADMIN VALUES(2, 3);
+insert into IS_ADMIN VALUES(3, 3);
+
+
 DROP TABLE IF EXISTS IS_MODERATOR;
 CREATE TABLE IS_MODERATOR (
     user_id INT NOT NULL ,
@@ -283,6 +315,9 @@ CREATE TABLE IS_MODERATOR (
     FOREIGN KEY (group_id) REFERENCES social_media.GROUP(group_id) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY(user_id,group_id)
 );
+
+insert into IS_MODERATOR VALUES(2, 1);
+insert into IS_MODERATOR VALUES(1, 2);
 
 DROP TABLE IF EXISTS MAKES_A_REACT;
 CREATE TABLE MAKES_A_REACT (
@@ -325,6 +360,12 @@ CREATE TABLE SENDS_SPECIFIC (
     PRIMARY KEY(message_id)
 );
 
+-- insert into SENDS_SPECIFIC VALUES()
+insert into SENDS_SPECIFIC VALUES(2, 3, 1);
+insert into SENDS_SPECIFIC VALUES(3, 2, 2);
+insert into SENDS_SPECIFIC VALUES(2, 3, 3);
+insert into SENDS_SPECIFIC VALUES(3, 2, 4);
+
 DROP TABLE IF EXISTS SENDS_GENERAL;
 CREATE TABLE SENDS_GENERAL (
     sender_id INT NOT NULL ,
@@ -335,6 +376,10 @@ CREATE TABLE SENDS_GENERAL (
     FOREIGN KEY (message_id) REFERENCES MESSAGE(message_id) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY(message_id)
 );
+
+insert into SENDS_GENERAL VALUES(3, 1, 5);
+insert into SENDS_GENERAL VALUES(2, 1, 6);
+insert into SENDS_GENERAL VALUES(1, 1, 7);
 
 DROP TABLE IF EXISTS RESPONDS;
 CREATE TABLE RESPONDS (
@@ -354,8 +399,12 @@ CREATE TABLE SHARES (
     FOREIGN KEY (user_id) REFERENCES USER(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (group_id) REFERENCES social_media.GROUP(group_id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (post_id) REFERENCES POST(post_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    PRIMARY KEY(post_id)
+    PRIMARY KEY(post_id, group_id, user_id)
 );
+
+insert into SHARES VALUES(3, 1, 2);
+insert into SHARES VALUES(3, 1, 3);
+insert into SHARES VALUES(2, 2, 2);
 
 DROP TABLE IF EXISTS IS_TAGGED;
 CREATE TABLE IS_TAGGED (
