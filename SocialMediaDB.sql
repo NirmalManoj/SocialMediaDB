@@ -124,6 +124,9 @@ CREATE TABLE PAGE (
     FOREIGN KEY (owner_id) REFERENCES USER(user_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+insert into PAGE VALUES(NULL, "Disney World", 1);
+insert into PAGE VALUES(NULL, "BSNL", 3);
+
 DROP TABLE IF EXISTS BUSINESS_PLACE;
 CREATE TABLE BUSINESS_PLACE (
     page_id int PRIMARY KEY,
@@ -147,6 +150,8 @@ CREATE TABLE COMPANY (
     work_domain varchar(30),
     FOREIGN KEY (page_id) REFERENCES PAGE(page_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+insert into COMPANY VALUES(2, "Telecom");
 
 DROP TABLE IF EXISTS BRANCH_COMPANY;
 CREATE TABLE BRANCH_COMPANY (
@@ -188,6 +193,9 @@ CREATE TABLE ENTERTAINMENT  (
     audience varchar(300),
     FOREIGN KEY (page_id) REFERENCES PAGE(page_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+insert into ENTERTAINMENT VALUES(1, "Closing ceremony: Closing for unknown period because of the pandemic.", "Anyone wearing masks!");
+
 
 DROP TABLE IF EXISTS CAUSE_COMMUNITY;
 CREATE TABLE CAUSE_COMMUNITY  (
