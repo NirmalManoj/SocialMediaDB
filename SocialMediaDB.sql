@@ -7,13 +7,16 @@ CREATE TABLE USER (
     user_id INT NOT NULL AUTO_INCREMENT primary key,
     password varchar(120) NOT NULL,
     name varchar(50) NOT NULL,
-    email varchar(20) NOT NULL,
+    email varchar(50) NOT NULL,
     contact_address varchar(300) NOT NULL,
-    phone int,
+    phone BIGINT,
     uptime TIME not null
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
-insert into USER VALUES(NULL, 'sdfsfs', 'NMAE',  'pb@afsd.com', 'voldem', 1231231, '12:12:21');
+-- insert into USER VALUES(NULL, 'sdfsfs', 'NMAE',  'pb@afsd.com', 'voldem', 1231231, '12:12:21');
+insert into USER VALUES(NULL, '#unbreakable_password', 'Nirmal',  'nirmal@nmc.com', 'Bakul Nivas, IIIT Hyderabad', 9812517891, '03:12:20');
+insert into USER VALUES(NULL, '#PinRaYI', 'Pinarayi Vijayan',  'cmo@kerala.gov.in', 'Cliff House, Trivandrum', 10020030019, '00:03:00');
+insert into USER VALUES(NULL, 'Chowkeedar', 'Narendra Modi',  'pm@gov.in', '7 Lok Kalyan Marg, New Delhi', 1111111111, '100:00:04');
 
 DROP TABLE IF EXISTS POST;
 CREATE TABLE POST (
@@ -21,12 +24,17 @@ CREATE TABLE POST (
     time TIMESTAMP not null,
     text TEXT,
     media varchar(10000),
-    PRIMARY KEY(post_id),
     user_id int not null,
+    PRIMARY KEY(post_id),
     CONSTRAINT OWNS_POST FOREIGN KEY (user_id) REFERENCES USER (user_id) on DELETE CASCADE on UPDATE CASCADE,
     CONSTRAINT CONTENT_PRESENT_IN_POST CHECK (text is NOT NULL OR media is NOT NULL)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
+
+insert into POST VALUES(NULL, '2020-10-03 00:00:01', "A random news I saw today\n, National Boyfriend Day on October 3rd recognizes the sweetheart in your life. Like special days for family members, this day dedicates attention to the boyfriends in our lives. Whether the relationship is new or seasoned, boyfriends bring unique meaning to our lives.", NULL, 1);
+insert into POST VALUES(NULL, '2020-10-03 12:00:09', "Inaugurating 90 new Government Schools.", "https://www.facebook.com/PinarayiVijayan/videos/1244544369240150", 2);
+insert into POST VALUES(NULL, '2020-10-03 09:00:01', "Today, I will be inaugurating Atal Tunnel in Manali. It is “world’s longest highway” tunnel and is named Atal Tunnel, Rohtang. The 9.02 kilometres long engineering marvel connects Manali in Himachal Pradesh to Lahaul-Spiti throughout the year. Currently, the area remains cut off for about 6 months each year owing to heavy snowfall and inclement weather. The Atal tunnel has huge strategic significance as it will greatly assist in the movement of armed forces.\n\nAtal Tunnel or the Rohtang tunnel has been built in the Pir Panjal range of Himalayas. The tunnel is located at an altitude of 10,000 Feet from the Mean Sea Level (MSL). The tunnel is set to reduce road distance by 46 kilometres between Leh and Manali. Atal tunnel also reduces the journey time by around 4 to 5 hours. The decision to construct a strategic tunnel below the Rohtang Pass was taken on June 03, 2000 during the tenure of the then Prime Minister Atal Bihari Vajpayee.", "https://images.newindianexpress.com/uploads/user/imagelibrary/2020/10/3/w900X450/Modi_Atal_tunnel_PTI.jpg", 3);
+insert into POST VALUES(NULL, '2020-10-03 16:00:01', NULL, "https://d3nuqriibqh3vw.cloudfront.net/attachment-4_resized_0.jpg?Y82N9g17xw0FhDEVnmX8nAs96cyHP.w6", 2);
 
 DROP TABLE IF EXISTS COMMENT;
 CREATE TABLE COMMENT(
@@ -60,10 +68,13 @@ DROP TABLE IF EXISTS PROFILE;
 CREATE TABLE PROFILE (
     user_id int PRIMARY KEY,
     date_of_birth DATE not null,
-    sex varchar(30),
-    sexes ENUM('Male', 'Female', 'Others', 'PreferNotToSay'),
+    sex ENUM('Male', 'Female', 'Others', 'PreferNotToSay') not null,
     CONSTRAINT OWNS_PROFILE FOREIGN KEY (user_id) REFERENCES USER (user_id) on DELETE CASCADE on UPDATE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
+
+insert into PROFILE VALUES(1, '1923-03-01', 4);
+insert into PROFILE VALUES(2, '2000-05-03', 1);
+insert into PROFILE VALUES(3, '1992-06-12', 1);
 
 DROP TABLE IF EXISTS EDUCATION;
 CREATE TABLE EDUCATION (
@@ -72,6 +83,13 @@ CREATE TABLE EDUCATION (
     PRIMARY KEY (user_id, education),
     FOREIGN KEY (user_id) REFERENCES PROFILE(user_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+insert into EDUCATION VALUES(1, 'None');
+insert into EDUCATION VALUES(1, 'MS in Computational Political Science');
+insert into EDUCATION VALUES(2, "Bachelor's degree in Political Science");
+-- insert into EDUCATION VALUES(3, "Bachelor's degree in Bulshitting");
+insert into EDUCATION VALUES(3, "Doctor of Philosophy in Political Science");
+
 
 DROP TABLE IF EXISTS PAGE;
 CREATE TABLE PAGE (
