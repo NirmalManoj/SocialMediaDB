@@ -172,7 +172,7 @@ def addUser():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
    
@@ -197,7 +197,7 @@ def addProfile():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -216,7 +216,7 @@ def addPost():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -238,7 +238,7 @@ def addComment():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -260,7 +260,7 @@ def addStory():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -275,7 +275,7 @@ def addMessage():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -290,7 +290,7 @@ def addEducation():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
     
@@ -305,7 +305,7 @@ def addGroup():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -321,7 +321,7 @@ def addPage():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -337,7 +337,7 @@ def addBusinessPlace():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -354,7 +354,7 @@ def addProductInBusinessPlace():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -370,7 +370,7 @@ def addBrandProduct():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -385,7 +385,7 @@ def addCompany():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -400,7 +400,7 @@ def addBranchCompany():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -416,7 +416,7 @@ def addPublicFigure():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -432,7 +432,7 @@ def addNewsOfPublicFigure():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -448,7 +448,7 @@ def addEntertainment():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -464,7 +464,7 @@ def addCauseCommunity():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -492,7 +492,7 @@ def addFollows():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -544,7 +544,7 @@ def addMakesGeneralReact():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -562,7 +562,7 @@ def addLikes():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -576,7 +576,7 @@ def addUserToGroup():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -595,7 +595,7 @@ def makeUserAdmin():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -614,7 +614,7 @@ def makeUserModerator():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -658,7 +658,7 @@ def makeReactionToAComment():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -673,7 +673,7 @@ def mentionInComment():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -690,7 +690,7 @@ def addCommmentsRelations():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -699,14 +699,14 @@ def addSendsSpecific():
     row = {}
     row["sender_id"] = input("Enter the ID of the sender: ")
     row["receiver_id"] = input("Enter the ID of the receiver: ")
-    row["comment_id"] = input("Enter the ID of the comment: ")
+    row["message_id"] = input("Enter the ID of the message: ")
 
     try:
         query = "INSERT INTO SENDS_SPECIFIC VALUES(%s, %s, %s);" % (row["sender_id"], row["receiver_id"], row["message_id"])
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -722,7 +722,7 @@ def addSendsGeneral():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -765,7 +765,7 @@ def addResponds():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -781,7 +781,7 @@ def addShares():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -796,12 +796,235 @@ def addIsTagged():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        cur.rollback()
+        con.rollback()
         print(e)
         print("Error: Check your inputs.")
 
+
+def showUserCreationOptions():
+    while(1):
+        tmp = sp.call('clear', shell=True)
+        refreshDatabase()
+        print("Choose an option from below: ")
+        print("1. Create a new USER.")
+        print("2. Create a profile for a user.")
+        print("3. Add an educational qualification of the user.")
+        print("42. Go back.")
+
+        n = input("Enter: ")
+        if n == '1':
+            addUser()
+        elif n == '2':
+            addProfile()
+        elif n == '3':
+            addEducation()
+        elif n == '42':
+            break
+        else:
+            input("Invalid input, press enter to continue.")
+            continue
+        input("Press enter to Continue.")
+
+
+def showPostRelatedOptions():
+    while(1):
+        tmp = sp.call('clear', shell=True)
+        refreshDatabase()
+        print("Choose an option from below: ")
+        print("1. Create a new post.")
+        print("2. Create a new comment.")
+        print("3. Add a comment to a post.")
+        print("4. Tag someone in a post.")
+        print("5. Mention someone in a comment.")
+        print("6. React to a post.")
+        print("7. React to a comment.")
+        print("8. Share a post in a group.")
+        print("42. Go back.")
+
+        n = input("Enter: ")
+        if n == '1':
+            addPost()
+        elif n == '2':
+            addComment()
+        elif n == '3':
+            addCommmentsRelations()
+        elif n == '4':
+            addIsTagged()
+        elif n == '5':
+            mentionInComment()
+        elif n == '6':
+            addMakesGeneralReact()
+        elif n == '7':
+            makeReactionToAComment()
+        elif n == '8':
+            addShares()
+        elif n == '42':
+            break
+        else:
+            input("Invalid input, press enter to continue.")
+            continue
+        input("Press enter to Continue.")
+
+def showGroupRelatedOptions():
+    while(1):
+        tmp = sp.call('clear', shell=True)
+        refreshDatabase()
+        print("Choose an option from below: ")
+        print("1. Create a new group.")
+        print("2. Make a new admin in a group.")
+        print("3. Make someone a new moderator in a group.")
+        print("4. Add a user to a group.")
+        print("5. Send a new general message in a group.")
+        print("6. Share a post in a group.")
+        print("42. Go back.")
+        n = input("Enter: ")
+        if n == '1':
+            addGroup()
+        elif n == '2':
+            makeUserAdmin()
+        elif n == '3':
+            makeUserModerator()
+        elif n == '4':
+            addUserToGroup()
+        elif n == '5':
+            addMessage()
+            addSendsGeneral()
+        elif n == '6':
+            addShares()
+        elif n == '42':
+            break
+        else:
+            input("Invalid input, press enter to continue.")
+            continue
+        input("Press enter to Continue.")
+    
+        
+
+def showUserToUserOptions():
+    while(1):
+        tmp = sp.call('clear', shell=True)
+        refreshDatabase()
+        print("Choose an option from below: ")
+        print("1. Follow someone. ") 
+        print("2. Send a message to a user. ")
+        print("42. Go back.")
+        n = input("Enter: ")
+        if n == '1':
+            addFollows()
+        elif n == '2':
+            addMessage()
+            addSendsSpecific()
+        elif n == '42':
+            break
+        else:
+            input("Invalid input, press enter to continue.")
+            continue
+        input("Press enter to Continue.")
+
+
+def showStoryOptions():
+    while(1):
+        tmp = sp.call('clear', shell=True)
+        refreshDatabase()
+        print("Choose an option from below: ")
+        print("1. Create a new story. ") 
+        print("2. Respond to a story. ")
+        print("42. Go back.")
+        n = input("Enter: ")
+        if n == '1':
+            addStory()
+        elif n == '2':
+            addResponds()
+        elif n == '42':
+            break
+        else:
+            input("Invalid input, press enter to continue.")
+            continue
+        input("Press enter to Continue.")
+
+
+def showGroupRelatedOptions():
+    while(1):
+        tmp = sp.call('clear', shell=True)
+        refreshDatabase()
+        print("Choose an option from below: ")
+        print("1. Like a page.") 
+        print("2. Create a new page.")
+        print("3. Make a page for brand product.")
+        print("4. Make a page for business place.")
+        print("5. Insert a product in a business place page.")
+        print("6. Make a page for entertainment.") 
+        print("7. Make a page for cause communities.")
+        print("8. Make a page for public figures.")
+        print("9. Insert a related news in a public figure's page.")
+        print("10. Make a page for company.") 
+        print("11. Insert a branch in a page for a company.")
+        print("42. Go back.")
+        n = input("Enter: ")
+        if n == '1':
+            addLikes()
+        elif n == '2':
+            addPage()
+        elif n == '3':
+            addBrandProduct()
+        elif n == '4':
+            addBusinessPlace()
+        elif n == '5':
+            addProductInBusinessPlace()
+        elif n == '6':
+            addEntertainment()
+        elif n == '7':
+            addCauseCommunity()
+        elif n == '8':
+            addPublicFigure()
+        elif n == '9':
+            addNewsOfPublicFigure()
+        elif n == '10':
+            addCompany()
+        elif n == '11':
+            addBranchCompany()
+        elif n == '42':
+            break
+        else:
+            input("Invalid input, press enter to continue.")
+            continue
+        input("Press enter to Continue.")
+
+
 def insertionOptions():
-    print("Enter what you want to insert\n")
+    while(1):
+        tmp = sp.call('clear', shell=True)
+        refreshDatabase()
+        print("Choose an option from below: ")
+        print("1. Insertions related to users and profile.")
+        print("2. Insertions related to post.")
+        print("3. Insertions related to Groups")
+        print("4. Insertions related to action between users.")
+        print("5. Insertions related to stories.")
+        print("6. Insertions related to pages.")
+        print("42. Go back.")
+
+        n = input("Enter: ")
+
+        if n == '1':
+            showUserCreationOptions()
+        elif n == '2':
+            showPostRelatedOptions()
+        elif n == '3':
+            showGroupRelatedOptions()
+        elif n == '4':
+            showUserToUserOptions()
+        elif n == '5':
+            showStoryOptions()
+        elif n == '6':
+            showPageOptions()
+        elif n == '42':
+            break
+        else:
+            input("Invalid input, press enter to continue.")
+            continue
+        input("Press enter to Continue.")
+
 
 
 
