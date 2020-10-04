@@ -267,6 +267,162 @@ def addStory():
     return
 
 
+def addMessage():
+    global cur
+    row = {}
+    row["text"] = input("Enter the message: ")
+
+    try:
+        query = 'INSERT INTO MESSAGE VALUES(NULL, "%s");' % (row["text"]);
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        print(e)
+        print("Error: Check your inputs.")
+        return
+
+def addEducation():
+    global cur
+    row = {}
+    row["user_id"] = input("Enter the ID of the user: ")
+    row["education"] = input("Enter an educational qualification of the user: ")
+
+    try:
+        query = "INSERT INTO EDUCATION VALUES(%s, '%s');" % (row["user_id"], row["education"])
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        print(e)
+        print("Error: Check your inputs.")
+    
+def addGroup():
+    global cur
+    row = {}
+    row["group_name"] = input("Enter the name of the new group: ")
+    row["group_privacy"] = input("Enter the privacy setting of the new group [Public, Private, Secret]: ")
+
+    try:
+        query = "INSERT INTO social_media.GROUP VALUES(NULL, '%s', '%s') " % (row["group_name"], row["group_privacy"])
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        print(e)
+        print("Error: Check your inputs")
+
+
+def addPage():
+    global cur
+    row = {}
+    row["page_name"] = input("Enter the name of the page: ")
+    row["owner_id"] = input("Enter the user ID of the owner: ")
+
+    try:
+        query = "INSERT INTO PAGE VALUES(NULL, '%s', '%s') " % (row["page_name"], row["owner_id"])
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        print(e)
+        print("Error: Check your inputs.")
+
+def addBusinessPlace():
+    global cur
+    row = {}
+    row["page_id"] = input("Enter the ID of the page: ")
+    row["owner_name"] = input("Enter the name of the stake holder of this business: ")
+    row["locaton"] = input("Enter the location: ")
+
+    try:
+        query = "INSERT INTO BUSINESS_PLACE VALUES(%s, '%s', '%s')" % (row["page_id"], row["owner_name"], row["location"])
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        print(e)
+        print("Error: Check your inputs.")
+
+
+def addProductInBusinessPlace():
+    global cur
+    row = {}
+    row["page_id"] = input("Enter the ID of the page: ")
+    row["name"] = input("Enter the name of the product: ")
+    row["price"] = input("Enter the name price of the product: ")
+
+    try:
+        query = "INSERT INTO PROD_BP VALUES('%s', '%s', %s)" % (row["page_id"], row["name"], row["price"])
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        print(e)
+        print("Error: Check your inputs.")
+
+def addBrandProduct():
+    global cur
+    row = {}
+    row["page_id"] = input("Enter the ID of the page: ")
+    row["website"] = input("Enter website address: ")
+    row["cust_servcie"] = input("Enter the customer care number")
+
+    try:
+        query = "INSERT INTO BRAND_PRODUCT VALUES(%s, '%s', %s);" %(row["page_id"], row["website"], row["cust_service"])
+
+def addCompany():
+    global cur
+    row = {}
+    row["page_id"] = input("Enter the ID of the page: ")
+    row["work_domain"] = input("Enter the work domain: ")
+
+    try:
+        query = "INSERT INTO COMPANY VALUES(%s, '%s');"% (row["page_id"], row["work_domain"])
+
+def addBranchCompany():
+    global cur
+    row = {}
+    row["page_id"] = input("Enter the ID of the page: ")
+    row["branch"] = input("Enter the branch of a company: ")
+
+    try:
+        query = "INSERT INTO BRANCH_COMPANY VALUES(%s, '%s');" % (row["page_id"], row["branch"])
+
+def addPublicFigure():
+    global cur
+    row = {}
+    row["page_id"] = input("Enter the ID of the page: ")
+    row["name"] = input("Enter the name of the public figure: ")
+    row["field"] = input("Enter the field")
+
+    try:
+        query = "INSERT INTO PUBLIC_FIGURE VALUES(%s, '%s', '%s');" % (row["page_id"], row["name"], row["field"])
+
+def addNewsOfPublicFigure():
+    global cur
+    row = {}
+    row["page_id"] = input("Enter the ID of the page: ")
+    row["news"] = input("Enter the news: ")
+    row["published_time"] = getCurrentTimeStamp()
+
+    try:
+        query = "INSERT INTO NEWS_PUB_FIG VALUES(%s, '%s', '%s'); " % (row["page_id"], row["news"], row["published_time"])
+
+def addEntertainment():
+    global cur
+    row = {}
+    row["page_id"] = input("Enter the ID of the page: ")
+    row["events"] = input("Enter the next event: ")
+    row["audience"] = input("Enter the intended audience: ")
+
+    try:
+        query = "INSERt INTO ENTERTAINMENT VALUES(%s, '%s', '%s'); " % (row["page_id"], row["events"], row["audience"])
+
+def addCauseCommunity():
+    global cur
+    row = {}
+    row["page_id"] = input("Enter the ID of the page: ")
+    row["goal"] = input("Enter the goal of this community: ")
+    row["activities"] = input("Enter the activities by this community: ")
+
+    try:
+        query = "INSERT INTO CAUSE_COMMUNITY VALUES(%s, '%s', '%s');" % (row["page_id"], row["goal"], row["activities"])
+
 
 # def isValidUserID(user_id):
 #     cur.execute("SELECT user_id from USER where user_id=%s;" % (user_id))
@@ -485,6 +641,95 @@ def mentionInComment():
     return
 
 
+def addCommmentsRelations():
+    global cur
+    row = {}
+    row["comment_id"] = input("Enter the ID of the comment: ")
+    row["user_id"] = input("Enter the ID of the user who made the comment: ")
+    row["post_id"] = input("Enter the ID of the post in which the comment is made: ")
+
+    try:
+        query = "INSERT INTO COMMENTS VALUES(%s, %s, %s);" % (row["comment_id"], row["user_id"], row["post_id"])
+
+def addSendsSpecific():
+    global cur
+    row = {}
+    row["sender_id"] = input("Enter the ID of the sender: ")
+    row["receiver_id"] = input("Enter the ID of the receiver: ")
+    row["comment_id"] = input("Enter the ID of the comment: ")
+
+    try:
+        query = "INSERT INTO SENDS_SPECIFIC VALUES(%s, %s, %s);" % (row["sender_id"], row["receiver_id"], row["message_id"])
+
+
+def addSendsGeneral():
+    global cur
+    row = {}
+    row["sender_id"] = input("Enter the ID of the sender: ")
+    row["group_id"] = input("Enter the ID of the group: ")
+    row["message_id"] = input("Enter the ID of the message: ")
+
+    try:
+        query = "INSERT INTO SENDS_GENERAL VALUES(%s, %s, %s); " % (row["sender_id"], row["group_id"], row["message_id"])
+
+
+def addResponds():
+    global cur
+    row = {}
+    row["reacter_id"] = input("Enter the ID of the user who reacts to the story: ")
+    row["story_id"] = input("Enter the ID of the story: ")
+    print("Choose the react type by entering the corresponding number")
+    print("1. Like")
+    print("2. Dislike")
+    print("3. Wow")
+    print("4. Heart")
+    print("5. Angry")
+    print("6. Haha")
+    reactNum = 123 # A random invalid number
+    try:
+        reactNum = int(input())
+    except:
+        print("Invalid react Type")
+
+    if reactNum == 1:
+        row["reactedType"]="Like"
+    elif reactNum == 2:
+        row["reactedType"]="Dislike"
+    elif reactNum == 3:
+        row["reactedType"]="Wow"
+    elif reactNum == 4:
+        row["reactedType"]="Heart"
+    elif reactNum == 5:
+        row["reactedType"]="Angry"
+    elif reactNum == 6:
+        row["reactedType"]="Haha"
+    else :
+        print("Invalid react Type")
+        return
+
+    try:
+        query = "INSERT INTO RESPONDS VALUES(%s, %s,'%s');" %(row["reacter_id"], row["story_id"], row["reactedType"]) 
+
+
+def addShares():
+    global cur
+    row = {}
+    row["user_id"] = input("Enter the ID of user: ")
+    row["group_id"] = input("Enter the ID of the group: ")
+    row["post_id"] = input("Enter the ID of the post to share: ")
+
+    try:
+        query = "INSERT INTO SHARES VALUES(%s, %s, %s);" %(row["user_id"], row["group_id"], row["post_id"])
+
+def addIsTagged():
+    global cur
+    row = {}
+    row["post_id"] = input("Enter the ID of the post: ")
+    row["user_id"] = input("Enter the ID of the user who is tagged in the post: ")
+
+    try:
+        query = "INSERT INTO IS_TAGGED VALUES(%s, %s); " %(row["user_id"], row["post_id"])
+
 
 def insertionOptions():
     print("Enter what you want to insert\n")
@@ -551,7 +796,8 @@ while(1):
 
                 # addMakesGe    neralReact()
                 # addComment()
-                addStory()
+                # addStory()
+                addMessage()
                 # addLikes()
                 viewOptions()
             elif(inp == '2'):
