@@ -16,7 +16,7 @@ def checkCommentIntegrity(comment_id, user_id):
         try:
             cur.execute(query)
             con.commit()
-            print(cur.fetchall())
+            # print(cur.fetchall())
             if cur.rowcount == 0:
                 # print("oops")
                 return False
