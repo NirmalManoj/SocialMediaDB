@@ -168,7 +168,7 @@ def addUser():
     user["phone"] = input("Please enter the phone number [without space or hyphen]")
 
     try:
-        query = "INSERT INTO USER VALUES(NULL, '%s','%s','%s','%s',%s, '00:00:00')" %(user["password"],user["name"],user["email"],user["address"],user["phone"])   
+        query = "INSERT INTO USER VALUES(NULL, '%s','%s','%s','%s',%s, '00:00:00');" %(user["password"],user["name"],user["email"],user["address"],user["phone"])   
         cur.execute(query)
         con.commit()
     except Exception as e:
@@ -193,7 +193,7 @@ def addProfile():
     profile['sex'] = input("Enter sex of the use [Male, Female, Others, PreferNotToSay]: ")
 
     try:
-        query = "INSERT INTO PROFILE VALUES (%s,'%s','%s')" %(profile["user_id"],profile["dob"],profile["sex"])
+        query = "INSERT INTO PROFILE VALUES (%s,'%s','%s');" %(profile["user_id"],profile["dob"],profile["sex"])
         cur.execute(query)
         con.commit()
     except Exception as e:
@@ -212,7 +212,7 @@ def addPost():
     post['media'] = input("Enter media associated with the post")
     
     try:
-        query = "INSERT INTO POST VALUES (NULL, '%s', '%s', '%s', %s)" %(post["time"], post["text"], post["media"], post["user_id"])
+        query = "INSERT INTO POST VALUES (NULL, '%s', '%s', '%s', %s);" %(post["time"], post["text"], post["media"], post["user_id"])
         cur.execute(query)
         con.commit()
     except Exception as e:
@@ -301,7 +301,7 @@ def addGroup():
     row["group_privacy"] = input("Enter the privacy setting of the new group [Public, Private, Secret]: ")
 
     try:
-        query = "INSERT INTO social_media.GROUP VALUES(NULL, '%s', '%s') " % (row["group_name"], row["group_privacy"])
+        query = "INSERT INTO social_media.GROUP VALUES(NULL, '%s', '%s'); " % (row["group_name"], row["group_privacy"])
         cur.execute(query)
         con.commit()
     except Exception as e:
@@ -317,7 +317,7 @@ def addPage():
     row["owner_id"] = input("Enter the user ID of the owner: ")
 
     try:
-        query = "INSERT INTO PAGE VALUES(NULL, '%s', '%s') " % (row["page_name"], row["owner_id"])
+        query = "INSERT INTO PAGE VALUES(NULL, '%s', '%s'); " % (row["page_name"], row["owner_id"])
         cur.execute(query)
         con.commit()
     except Exception as e:
@@ -333,7 +333,7 @@ def addBusinessPlace():
     row["locaton"] = input("Enter the location: ")
 
     try:
-        query = "INSERT INTO BUSINESS_PLACE VALUES(%s, '%s', '%s')" % (row["page_id"], row["owner_name"], row["location"])
+        query = "INSERT INTO BUSINESS_PLACE VALUES(%s, '%s', '%s');" % (row["page_id"], row["owner_name"], row["location"])
         cur.execute(query)
         con.commit()
     except Exception as e:
@@ -350,7 +350,7 @@ def addProductInBusinessPlace():
     row["price"] = input("Enter the name price of the product: ")
 
     try:
-        query = "INSERT INTO PROD_BP VALUES('%s', '%s', %s)" % (row["page_id"], row["name"], row["price"])
+        query = "INSERT INTO PROD_BP VALUES('%s', '%s', %s);" % (row["page_id"], row["name"], row["price"])
         cur.execute(query)
         con.commit()
     except Exception as e:
