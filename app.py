@@ -7,6 +7,28 @@ from datetime import datetime
 import time
 import datetime
 
+
+def checkIsMemberOfGroup(user_id, group_id):
+    global cur
+
+    try:
+        query = "SELECT * FROM BELONGS_TO WHERE user_id=%d AND group_id=%d;" %(int(user_id), int(group_id))
+        # print(query)
+        try:
+            cur.execute(query)
+            con.commit()
+            # print(cur.fetchall())
+            if cur.rowcount == 0:
+                # print("oops")
+                return False
+            return True
+        except Exception as e:
+            con.rollback()
+            return False
+    except Exception as enx:
+        # print("hi")
+        return False
+
 def checkCommentIntegrity(comment_id, user_id):
     global cur
 
@@ -749,6 +771,9 @@ def addSendsGeneral(message_id):
     row["sender_id"] = input("Enter the ID of the sender: ")
     row["group_id"] = input("Enter the ID of the group: ")
     # row["message_id"] = input("Enter the ID of the message: ")
+    if checkIsMemberOfGroup(row["sender_id"], row["group_id"]) == False:
+        print("Error: Sender is not a member of the group.")
+        return
 
     try:
         query = "INSERT INTO SENDS_GENERAL VALUES(%s, %s, %d); " % (row["sender_id"], row["group_id"], message_id)
@@ -808,6 +833,10 @@ def addShares():
     row["user_id"] = input("Enter the ID of user: ")
     row["group_id"] = input("Enter the ID of the group: ")
     row["post_id"] = input("Enter the ID of the post to share: ")
+
+    if checkIsMemberOfGroup(row["user_id"], row["group_id"]) == False:
+        print("Error: Sender is not a member of the group.")
+        return
 
     try:
         query = "INSERT INTO SHARES VALUES(%s, %s, %s);" %(row["user_id"], row["group_id"], row["post_id"])
