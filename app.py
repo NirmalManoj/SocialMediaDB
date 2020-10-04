@@ -12,11 +12,16 @@ def getCurrentTimeStamp():
     return datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
 
 def isNonEmptyQuery(query):
-    cur.execute(query)
-    con.commit()
-    if cur.rowcount == 0:
+    try:
+        cur.execute(query)
+        con.commit()
+        if cur.rowcount == 0:
+            return False
+        return True
+    except Exception as e:
+        con.rollback()
         return False
-    return True
+    
 
 def viewTable(rows):
 
@@ -159,13 +164,13 @@ def viewOptions():
 def addUser():
     global cur
     user = {}
-    print("Enter the details of the user:")
+    print("Enter the details of the user below.\n")
 
-    user["name"] = input("Please provide name of the user:")
-    user["email"] = input("Please provide the email id of the user:")
-    user["password"] = input("Please provide the password:")
-    user["address"] = input("Please provide the address:")
-    user["phone"] = input("Please enter the phone number [without space or hyphen]")
+    user["name"] = input("Please provide name of the user: ")
+    user["email"] = input("Please provide the email id of the user: ")
+    user["password"] = input("Please provide the password: ")
+    user["address"] = input("Please provide the address: ")
+    user["phone"] = input("Please enter the phone number [without space or hyphen]: ")
 
     try:
         query = "INSERT INTO USER VALUES(NULL, '%s','%s','%s','%s',%s, '00:00:00');" %(user["password"],user["name"],user["email"],user["address"],user["phone"])   
@@ -178,7 +183,7 @@ def addUser():
    
 
 def addProfile():
-    print("Enter the profile details of the user:")
+    print("Enter the profile details of the user below.\n")
     profile = {}
     # try:
     #     query = "SELECT user_id FROM USER WHERE password='%s' AND name='%s' AND email='%s'" %(user['password'],user['name'],user['email'])
@@ -205,11 +210,10 @@ def addPost():
     global cur
     post = {}
 
-    post['user_id'] = input("Enter the user ID:")
-    # ts = time.time()
+    post['user_id'] = input("Enter the user ID: ")
     post['time'] = getCurrentTimeStamp()
-    post['text'] = input("Enter the post text:")
-    post['media'] = input("Enter media associated with the post")
+    post['text'] = input("Enter the post text: ")
+    post['media'] = input("Enter the link to the associated with the post: ")
     
     try:
         query = "INSERT INTO POST VALUES (NULL, '%s', '%s', '%s', %s);" %(post["time"], post["text"], post["media"], post["user_id"])
@@ -330,7 +334,7 @@ def addBusinessPlace():
     row = {}
     row["page_id"] = input("Enter the ID of the page: ")
     row["owner_name"] = input("Enter the name of the stake holder of this business: ")
-    row["locaton"] = input("Enter the location: ")
+    row["location"] = input("Enter the location: ")
 
     try:
         query = "INSERT INTO BUSINESS_PLACE VALUES(%s, '%s', '%s');" % (row["page_id"], row["owner_name"], row["location"])
@@ -363,7 +367,7 @@ def addBrandProduct():
     row = {}
     row["page_id"] = input("Enter the ID of the page: ")
     row["website"] = input("Enter website address: ")
-    row["cust_servcie"] = input("Enter the customer care number")
+    row["cust_service"] = input("Enter the customer care number: ")
 
     try:
         query = "INSERT INTO BRAND_PRODUCT VALUES(%s, '%s', %s);" %(row["page_id"], row["website"], row["cust_service"])
@@ -409,7 +413,7 @@ def addPublicFigure():
     row = {}
     row["page_id"] = input("Enter the ID of the page: ")
     row["name"] = input("Enter the name of the public figure: ")
-    row["field"] = input("Enter the field")
+    row["field"] = input("Enter the field: ")
 
     try:
         query = "INSERT INTO PUBLIC_FIGURE VALUES(%s, '%s', '%s');" % (row["page_id"], row["name"], row["field"])
@@ -552,8 +556,8 @@ def addLikes():
     global cur
     row = {}
     # try:
-    row["page_id"] = input("Enter the user ID: ")
-    row["user_id"] = input("Enter the page ID of the page to like: ")
+    row["user_id"] = input("Enter the user ID: ")
+    row["page_id"] = input("Enter the page ID of the page to like: ")
     # except Exception as e:
     #     print("Invalid USER ID")
     try:
@@ -583,15 +587,15 @@ def addUserToGroup():
 def makeUserAdmin():
     global cur
     row = {}
-    row["user_id"] = input("Enter the name of the user to make him an admin of a group: ")
-    row["group_id"] = input("Enter the name of the group for which user should be made an admin of: ")
+    row["user_id"] = input("Enter the ID of the user to make him an admin of a group: ")
+    row["group_id"] = input("Enter the ID of the group for which user should be made an admin of: ")
     # Don't we have to check if the user is a member of the group?
     query = "SELECT * FROM BELONGS_TO where group_id=%s and user_id=%s;" % (row["group_id"], row["user_id"])
     if isNonEmptyQuery(query) == False:
-        print("User doesn't belong to the group")
+        print("User doesn't belong to the group or invalid query.")
         return
     try:
-        query = "INSERT INTO IS_ADMIN VALUES(%s, %s);" (row["user_id"], row["group_id"])
+        query = "INSERT INTO IS_ADMIN VALUES(%s, %s);" % (row["user_id"], row["group_id"])
         cur.execute(query)
         con.commit()
     except Exception as e:
@@ -607,10 +611,10 @@ def makeUserModerator():
     # Don't we have to check if the user is a member of the group?
     query = "SELECT * FROM BELONGS_TO where group_id=%s and user_id=%s;" % (row["group_id"], row["user_id"])
     if isNonEmptyQuery(query) == False:
-        print("User doesn't belong to the group")
+        print("User doesn't belong to the group or invalid query.")
         return
     try:
-        query = "INSERT INTO IS_MODERATOR VALUES(%s, %s);" (row["user_id"], row["group_id"])
+        query = "INSERT INTO IS_MODERATOR VALUES(%s, %s);" % (row["user_id"], row["group_id"])
         cur.execute(query)
         con.commit()
     except Exception as e:
@@ -669,7 +673,7 @@ def mentionInComment():
     row["mentioner_id"] = input("Enter the ID of the user who mentioned someone: ")
     row["mentionee_id"] = input("Enter the ID of the user who got mentioned: ")
     try:
-        query = "INSERT INTO MENTIONS VALUES(%s, %s, %s);" (row["mentioner_id"], row["mentionee_id"], row["comment_id"])
+        query = "INSERT INTO MENTIONS VALUES(%s, %s, %s);" % (row["mentioner_id"], row["mentionee_id"], row["comment_id"])
         cur.execute(query)
         con.commit()
     except Exception as e:
@@ -694,15 +698,15 @@ def addCommmentsRelations():
         print(e)
         print("Error: Check your inputs.")
 
-def addSendsSpecific():
+def addSendsSpecific(message_id):
     global cur
     row = {}
     row["sender_id"] = input("Enter the ID of the sender: ")
     row["receiver_id"] = input("Enter the ID of the receiver: ")
-    row["message_id"] = input("Enter the ID of the message: ")
+    # row["message_id"] = input("Enter the ID of the message: ")
 
     try:
-        query = "INSERT INTO SENDS_SPECIFIC VALUES(%s, %s, %s);" % (row["sender_id"], row["receiver_id"], row["message_id"])
+        query = "INSERT INTO SENDS_SPECIFIC VALUES(%s, %s, %d);" % (row["sender_id"], row["receiver_id"], message_id)
         cur.execute(query)
         con.commit()
     except Exception as e:
@@ -710,15 +714,15 @@ def addSendsSpecific():
         print(e)
         print("Error: Check your inputs.")
 
-def addSendsGeneral():
+def addSendsGeneral(message_id):
     global cur
     row = {}
     row["sender_id"] = input("Enter the ID of the sender: ")
     row["group_id"] = input("Enter the ID of the group: ")
-    row["message_id"] = input("Enter the ID of the message: ")
+    # row["message_id"] = input("Enter the ID of the message: ")
 
     try:
-        query = "INSERT INTO SENDS_GENERAL VALUES(%s, %s, %s); " % (row["sender_id"], row["group_id"], row["message_id"])
+        query = "INSERT INTO SENDS_GENERAL VALUES(%s, %s, %d); " % (row["sender_id"], row["group_id"], message_id)
         cur.execute(query)
         con.commit()
     except Exception as e:
@@ -888,7 +892,12 @@ def showGroupRelatedOptions():
             addUserToGroup()
         elif n == '5':
             addMessage()
-            addSendsGeneral()
+            # cur.execute("select message_id from MESSAGE order by message_id desc limit 1;")
+            cur.execute("SELECT LAST_INSERT_ID();")
+            con.commit()
+            output = cur.fetchone()
+            # print(output['LAST_INSERT_ID()'])
+            addSendsGeneral(output['LAST_INSERT_ID()'])
         elif n == '6':
             addShares()
         elif n == '42':
@@ -896,7 +905,7 @@ def showGroupRelatedOptions():
         else:
             input("Invalid input, press enter to continue.")
             continue
-        input("Press enter to Continue.")
+        input("Press enter to continue.")
     
         
 
@@ -913,7 +922,10 @@ def showUserToUserOptions():
             addFollows()
         elif n == '2':
             addMessage()
-            addSendsSpecific()
+            cur.execute("SELECT LAST_INSERT_ID();")
+            con.commit()
+            output = cur.fetchone()
+            addSendsSpecific(output['LAST_INSERT_ID()'])
         elif n == '42':
             break
         else:
@@ -943,7 +955,7 @@ def showStoryOptions():
         input("Press enter to Continue.")
 
 
-def showGroupRelatedOptions():
+def showPageOptions():
     while(1):
         tmp = sp.call('clear', shell=True)
         refreshDatabase()
