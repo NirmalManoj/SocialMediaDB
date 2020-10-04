@@ -174,7 +174,7 @@ def addUser():
     except Exception as e:
         cur.rollback()
         print(e)
-        print("Invalid data! :( \n") 
+        print("Error: Check your inputs.")
    
 
 def addProfile():
@@ -199,7 +199,7 @@ def addProfile():
     except Exception as e:
         cur.rollback()
         print(e)
-        print("Invalid data! :( \n")
+        print("Error: Check your inputs.")
 
 def addPost():
     global cur
@@ -218,7 +218,7 @@ def addPost():
     except Exception as e:
         cur.rollback()
         print(e)
-        print("Invalid data! :( \n")
+        print("Error: Check your inputs.")
 
 
 def addComment():
@@ -241,7 +241,6 @@ def addComment():
         cur.rollback()
         print(e)
         print("Error: Check your inputs.")
-    return
 
 
 def addStory():
@@ -263,8 +262,7 @@ def addStory():
     except Exception as e:
         cur.rollback()
         print(e)
-        pritn("Error: Check you inputs.")
-    return
+        print("Error: Check your inputs.")
 
 
 def addMessage():
@@ -277,9 +275,9 @@ def addMessage():
         cur.execute(query)
         con.commit()
     except Exception as e:
+        cur.rollback()
         print(e)
         print("Error: Check your inputs.")
-        return
 
 def addEducation():
     global cur
@@ -292,6 +290,7 @@ def addEducation():
         cur.execute(query)
         con.commit()
     except Exception as e:
+        cur.rollback()
         print(e)
         print("Error: Check your inputs.")
     
@@ -306,8 +305,9 @@ def addGroup():
         cur.execute(query)
         con.commit()
     except Exception as e:
+        cur.rollback()
         print(e)
-        print("Error: Check your inputs")
+        print("Error: Check your inputs.")
 
 
 def addPage():
@@ -321,6 +321,7 @@ def addPage():
         cur.execute(query)
         con.commit()
     except Exception as e:
+        cur.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -336,6 +337,7 @@ def addBusinessPlace():
         cur.execute(query)
         con.commit()
     except Exception as e:
+        cur.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -352,6 +354,7 @@ def addProductInBusinessPlace():
         cur.execute(query)
         con.commit()
     except Exception as e:
+        cur.rollback()
         print(e)
         print("Error: Check your inputs.")
 
@@ -364,6 +367,12 @@ def addBrandProduct():
 
     try:
         query = "INSERT INTO BRAND_PRODUCT VALUES(%s, '%s', %s);" %(row["page_id"], row["website"], row["cust_service"])
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        cur.rollback()
+        print(e)
+        print("Error: Check your inputs.")
 
 def addCompany():
     global cur
@@ -373,6 +382,12 @@ def addCompany():
 
     try:
         query = "INSERT INTO COMPANY VALUES(%s, '%s');"% (row["page_id"], row["work_domain"])
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        cur.rollback()
+        print(e)
+        print("Error: Check your inputs.")
 
 def addBranchCompany():
     global cur
@@ -382,6 +397,12 @@ def addBranchCompany():
 
     try:
         query = "INSERT INTO BRANCH_COMPANY VALUES(%s, '%s');" % (row["page_id"], row["branch"])
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        cur.rollback()
+        print(e)
+        print("Error: Check your inputs.")
 
 def addPublicFigure():
     global cur
@@ -392,6 +413,12 @@ def addPublicFigure():
 
     try:
         query = "INSERT INTO PUBLIC_FIGURE VALUES(%s, '%s', '%s');" % (row["page_id"], row["name"], row["field"])
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        cur.rollback()
+        print(e)
+        print("Error: Check your inputs.")
 
 def addNewsOfPublicFigure():
     global cur
@@ -402,6 +429,12 @@ def addNewsOfPublicFigure():
 
     try:
         query = "INSERT INTO NEWS_PUB_FIG VALUES(%s, '%s', '%s'); " % (row["page_id"], row["news"], row["published_time"])
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        cur.rollback()
+        print(e)
+        print("Error: Check your inputs.")
 
 def addEntertainment():
     global cur
@@ -412,6 +445,12 @@ def addEntertainment():
 
     try:
         query = "INSERt INTO ENTERTAINMENT VALUES(%s, '%s', '%s'); " % (row["page_id"], row["events"], row["audience"])
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        cur.rollback()
+        print(e)
+        print("Error: Check your inputs.")
 
 def addCauseCommunity():
     global cur
@@ -422,7 +461,12 @@ def addCauseCommunity():
 
     try:
         query = "INSERT INTO CAUSE_COMMUNITY VALUES(%s, '%s', '%s');" % (row["page_id"], row["goal"], row["activities"])
-
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        cur.rollback()
+        print(e)
+        print("Error: Check your inputs.")
 
 # def isValidUserID(user_id):
 #     cur.execute("SELECT user_id from USER where user_id=%s;" % (user_id))
@@ -448,9 +492,9 @@ def addFollows():
         cur.execute(query)
         con.commit()
     except Exception as e:
-        print("Error: This is not a valid query! \n")
-        return
-    return
+        cur.rollback()
+        print(e)
+        print("Error: Check your inputs.")
 
 
 def addMakesGeneralReact():
@@ -501,9 +545,8 @@ def addMakesGeneralReact():
         con.commit()
     except Exception as e:
         cur.rollback()
-        print("Error: PLEASE TRY AGAIN WITH DIFFERENT DATA!\n")
-        return
-    return
+        print(e)
+        print("Error: Check your inputs.")
 
 def addLikes():
     global cur
@@ -520,9 +563,8 @@ def addLikes():
         con.commit()
     except Exception as e:
         cur.rollback()
-        print("Error: PLEASE TRY AGAIN WITH DIFFERENT DATA!\n")
-        return
-    return
+        print(e)
+        print("Error: Check your inputs.")
 
 def addUserToGroup():
     global cur
@@ -535,9 +577,8 @@ def addUserToGroup():
         con.commit()
     except Exception as e:
         cur.rollback()
+        print(e)
         print("Error: Check your inputs.")
-        return
-    return
 
 def makeUserAdmin():
     global cur
@@ -555,9 +596,8 @@ def makeUserAdmin():
         con.commit()
     except Exception as e:
         cur.rollback()
+        print(e)
         print("Error: Check your inputs.")
-        return
-    return
 
 def makeUserModerator():
     global cur
@@ -575,9 +615,8 @@ def makeUserModerator():
         con.commit()
     except Exception as e:
         cur.rollback()
+        print(e)
         print("Error: Check your inputs.")
-        return
-    return
 
 def makeReactionToAComment():
     global cur
@@ -620,9 +659,8 @@ def makeReactionToAComment():
         con.commit()
     except Exception as e:
         cur.rollback()
-        print("Error: PLEASE TRY AGAIN WITH DIFFERENT DATA!\n")
-        return
-    return
+        print(e)
+        print("Error: Check your inputs.")
 
 def mentionInComment():
     global cur
@@ -636,9 +674,8 @@ def mentionInComment():
         con.commit()
     except Exception as e:
         cur.rollback()
+        print(e)
         print("Error: Check your inputs.")
-        return
-    return
 
 
 def addCommmentsRelations():
@@ -650,6 +687,12 @@ def addCommmentsRelations():
 
     try:
         query = "INSERT INTO COMMENTS VALUES(%s, %s, %s);" % (row["comment_id"], row["user_id"], row["post_id"])
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        cur.rollback()
+        print(e)
+        print("Error: Check your inputs.")
 
 def addSendsSpecific():
     global cur
@@ -660,7 +703,12 @@ def addSendsSpecific():
 
     try:
         query = "INSERT INTO SENDS_SPECIFIC VALUES(%s, %s, %s);" % (row["sender_id"], row["receiver_id"], row["message_id"])
-
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        cur.rollback()
+        print(e)
+        print("Error: Check your inputs.")
 
 def addSendsGeneral():
     global cur
@@ -671,7 +719,12 @@ def addSendsGeneral():
 
     try:
         query = "INSERT INTO SENDS_GENERAL VALUES(%s, %s, %s); " % (row["sender_id"], row["group_id"], row["message_id"])
-
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        cur.rollback()
+        print(e)
+        print("Error: Check your inputs.")
 
 def addResponds():
     global cur
@@ -709,7 +762,12 @@ def addResponds():
 
     try:
         query = "INSERT INTO RESPONDS VALUES(%s, %s,'%s');" %(row["reacter_id"], row["story_id"], row["reactedType"]) 
-
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        cur.rollback()
+        print(e)
+        print("Error: Check your inputs.")
 
 def addShares():
     global cur
@@ -720,6 +778,12 @@ def addShares():
 
     try:
         query = "INSERT INTO SHARES VALUES(%s, %s, %s);" %(row["user_id"], row["group_id"], row["post_id"])
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        cur.rollback()
+        print(e)
+        print("Error: Check your inputs.")
 
 def addIsTagged():
     global cur
@@ -729,7 +793,12 @@ def addIsTagged():
 
     try:
         query = "INSERT INTO IS_TAGGED VALUES(%s, %s); " %(row["user_id"], row["post_id"])
-
+        cur.execute(query)
+        con.commit()
+    except Exception as e:
+        cur.rollback()
+        print(e)
+        print("Error: Check your inputs.")
 
 def insertionOptions():
     print("Enter what you want to insert\n")
@@ -776,6 +845,7 @@ while(1):
     # print("HI: %s\n" %(asdf))
     # input("hisd")
     # # print(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+    con.escape_string("'")
     with con.cursor() as cur:
         exitflag = 0
         while(1):
