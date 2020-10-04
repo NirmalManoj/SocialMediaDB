@@ -7,11 +7,34 @@ from datetime import datetime
 import time
 import datetime
 
+def checkCommentIntegrity(comment_id, user_id):
+    global cur
+
+    try:
+        query = "SELECT * FROM COMMENTS WHERE user_id=%d AND comment_id=%d;" %(int(user_id), int(comment_id))
+        # print(query)
+        try:
+            cur.execute(query)
+            con.commit()
+            print(cur.fetchall())
+            if cur.rowcount == 0:
+                # print("oops")
+                return False
+            return True
+        except Exception as e:
+            con.rollback()
+            return False
+    except Exception as enx:
+        # print("hi")
+        return False
+
+
 def getCurrentTimeStamp():
     ts = time.time()
     return datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
 
 def isNonEmptyQuery(query):
+    global cur
     try:
         cur.execute(query)
         con.commit()
@@ -42,6 +65,8 @@ def viewTable(rows):
 
 
 def viewOptions():
+    global cur
+
     print("\nChoose the data that you want to see.\n\n")
     print("1.  USERS")
     print("2.  POST")
@@ -672,6 +697,10 @@ def mentionInComment():
     row["comment_id"] = input("Enter the ID of the comment: ")
     row["mentioner_id"] = input("Enter the ID of the user who mentioned someone: ")
     row["mentionee_id"] = input("Enter the ID of the user who got mentioned: ")
+    if checkCommentIntegrity(row["comment_id"], row["mentioner_id"]) == False:
+        print("Error: Comment was not created by the user who mentioned.")
+        return
+
     try:
         query = "INSERT INTO MENTIONS VALUES(%s, %s, %s);" % (row["mentioner_id"], row["mentionee_id"], row["comment_id"])
         cur.execute(query)
