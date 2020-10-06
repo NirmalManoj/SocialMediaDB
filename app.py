@@ -777,7 +777,7 @@ def viewOptions():
             query = "SELECT * FROM CAUSE_COMMUNITY"
         # Pages over
         elif choice == '17':
-            query = "SELECT social_media.GROUP.group_id, social_media.GROUP.group_name, social_media.GROUP.group_privacy, COUNT(BELONGS_TO.user_id) AS Number_of_Members FROM social_media.GROUP INNER JOIN BELONGS_TO ON social_media.GROUP.group_id = BELONGS_TO.group_id GROUP BY group_id"
+            query = "SELECT social_media.GROUP.group_id, social_media.GROUP.group_name, social_media.GROUP.group_privacy, COUNT(BELONGS_TO.user_id) AS Number_of_Members FROM social_media.GROUP LEFT OUTER JOIN BELONGS_TO ON social_media.GROUP.group_id = BELONGS_TO.group_id GROUP BY group_id"
         # Relationships
         elif choice == '18':
             query = "SELECT * FROM COMMENTS;"
