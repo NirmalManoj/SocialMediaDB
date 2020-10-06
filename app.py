@@ -2801,7 +2801,7 @@ while(1):
 
     try:
         con = pymysql.connect(host=host,
-                              user=root,
+                              user=username,
                               password=password,
                               db='social_media',
                               cursorclass=pymysql.cursors.DictCursor,
