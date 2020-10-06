@@ -7,6 +7,71 @@ from datetime import datetime
 import time
 import datetime
 
+# ----------------- Functional Requirement Start --------------- 
+
+def printWeeklyReport():
+    global cur
+    query = "select CAST(MIN(CAST(uptime as float)) as TIME) as 'MINIMUM UPTIME' from USER;"
+    try:
+        cur.execute(query)
+        con.commit()
+        dic={}
+        print(tabulate(cur.fetchall(), headers=dic, tablefmt='psql'))
+    except Exception as e:
+        con.rollback()
+        print(e)
+        return
+    # print(cur.fetchone())
+    query = "select CAST(MAX(CAST(uptime as float)) as TIME) as 'MAXIMUM UPTIME'from USER;"
+    try:
+        cur.execute(query)
+        con.commit()
+        dic={}
+        print(tabulate(cur.fetchall(), headers=dic, tablefmt='psql'))
+    except Exception as e:
+        con.rollback()
+        print(e)
+        return
+    # print(cur.fetchall())
+    query = "select CAST(AVG(CAST(uptime as float)) as TIME) as 'MEAN UPTIME' from USER;"
+    try:
+        cur.execute(query)
+        con.commit()
+        dic={}
+        print(tabulate(cur.fetchall(), headers=dic, tablefmt='psql'))
+    except Exception as e:
+        con.rollback()
+        print(e)
+        return
+    # print(cur.fetchall())
+    query = """select CAST(AVG(CAST(med.uptime as float)) as TIME) as 'MEDIAN UPTIME' from (select @rowindex:=@rowindex + 1 as rowindex, USER.uptime from USER order by uptime) AS med where med.rowindex in (FLOOR(@rowindex/2), CEIL(@rowindex/2));"""
+    # print(query)
+    # con.autocommit()
+    try:
+        cur.execute("set@rowindex := -1;")
+        con.commit()
+        cur.execute(query)
+        con.commit()
+        dic={}
+        print(tabulate(cur.fetchall(), headers=dic, tablefmt='psql'))
+    except Exception as e:
+        con.rollback()
+        print(e)
+        # return
+    # print(cur.fetchall())
+    query = "select stddev(uptime) as 'STANDARD DEVIATION OF UPTIME' from USER;"
+    try:
+        cur.execute(query)
+        con.commit()
+        dic={}
+        print(tabulate(cur.fetchall(), headers=dic, tablefmt='psql'))
+    except Exception as e:
+        con.rollback()
+        print(e)
+        return
+    # print(cur.fetchall())
+
+
 def search():
     search_key = input("Enter the keyword to be searched for: ")
     search_key = search_key+'+'
@@ -535,8 +600,10 @@ def showSuggestions():
         print("ERROR")
         return
 
+    
 
-###############################################################################################
+# ----------------- Functional Requirement End --------------------------------------------- #
+##############################################################################################
 ##############################################################################################
 
 def checkIsMemberOfGroup(user_id, group_id):
@@ -619,123 +686,130 @@ def viewTable(rows):
 
 def viewOptions():
     global cur
+    while(1):
+        tmp = sp.call('clear', shell=True)
+        refreshDatabase()
+        print("\nChoose the data that you want to see.\n\n")
+        print("1.  USERS")
+        print("2.  POST")
+        print("3.  STORIES")
+        print("4.  MESSAGES")
+        print("5.  PROFILES")
+        print("6.  EDUCATION OF USERS")
+        #Pages
+        print("7.  PAGES")
+        print("8.  PAGES OF BUSINESS_PLACE")
+        print("9.  PRODUCTS OF BRANDS AND DETAILS")
+        print("10. PAGES OF COMPANIES")
+        print("11. BRANCHES OF COMPANIES")
+        print("12. PAGES OF BRAND PRODUCTS")
+        print("13. PAGES OF PUBLIC FIGURES")
+        print("14. NEWS ABOUT PUBLIC FIGURES")
+        print("15. PAGES OF ENTERTAINMENT INDUSTRY ENTITIES")
+        print("16. PAGES OF CAUSE COMMUNITIES")
+        #Groups
+        print("17. GROUPS")
+        #RelatioNships
+        print("18. COMMENTS RELATIONSHIPS")
+        print("19. FOLLOWS RELATIONSHIPS")
+        print("20. GENERAL REACTS TO POSTS")
+        print("21. LIKES TO PAGES")
+        print("22. BELONGS TO GROUP RELATIONSHIP WITH USERS")
+        print("23. ADMINS OF GROUPS")
+        print("24. MODERATORS OF GROUPS")
+        print("25. REACTS TO COMMENTS")
+        print("26. MENTIONS OF USERS IN COMMENTS")
+        print("27. SPECIFIC MESSAGES BETWEEN USERS - META DETAILS")
+        print("28. GENERAL MESSAGES TO GROUPS - META DETAILS")
+        print("29. RESPONDS TO STORIES")
+        print("30. SHARES A POST IN A GROUP") # Basically posts in a group - comment to avoid semantical confusion
+        print("31. USERS TAGGED IN POSTS")
+        print("42. Go back.")
+        print("\n")
+        choice = input("Enter: ")
 
-    print("\nChoose the data that you want to see.\n\n")
-    print("1.  USERS")
-    print("2.  POST")
-    print("3.  STORIES")
-    print("4.  MESSAGES")
-    print("5.  PROFILES")
-    print("6.  EDUCATION OF USERS")
-    #Pages
-    print("7.  PAGES")
-    print("8.  PAGES OF BUSINESS_PLACE")
-    print("9.  PRODUCTS OF BRANDS AND DETAILS")
-    print("10. PAGES OF COMPANIES")
-    print("11. BRANCHES OF COMPANIES")
-    print("12. PAGES OF BRAND PRODUCTS")
-    print("13. PAGES OF PUBLIC FIGURES")
-    print("14. NEWS ABOUT PUBLIC FIGURES")
-    print("15. PAGES OF ENTERTAINMENT INDUSTRY ENTITIES")
-    print("16. PAGES OF CAUSE COMMUNITIES")
-    #Groups
-    print("17. GROUPS")
-    #RelatioNships
-    print("18. COMMENTS RELATIONSHIPS")
-    print("19. FOLLOWS RELATIONSHIPS")
-    print("20. GENERAL REACTS TO POSTS")
-    print("21. LIKES TO PAGES")
-    print("22. BELONGS TO GROUP RELATIONSHIP WITH USERS")
-    print("23. ADMINS OF GROUPS")
-    print("24. MODERATORS OF GROUPS")
-    print("25. REACTS TO COMMENTS")
-    print("26. MENTIONS OF USERS IN COMMENTS")
-    print("27. SPECIFIC MESSAGES BETWEEN USERS - META DETAILS")
-    print("28. GENERAL MESSAGES TO GROUPS - META DETAILS")
-    print("29. RESPONDS TO STORIES")
-    print("30. SHARES A POST IN A GROUP") # Basically posts in a group - comment to avoid semantical confusion
-    print("31. USERS TAGGED IN POSTS")
-    print("\n")
-    choice = input("Enter: ")
+        if choice == '1':
+            query = "SELECT * FROM USER;"
+        elif choice == '2':
+            query = "SELECT * FROM POST;"
+        elif choice == '3':
+            query = "SELECT * FROM STORIES;"
+        elif choice == '4':
+            query = "SELECT * FROM MESSAGE;"
+        elif choice == '5':
+            query = "SELECT * FROM PROFILE;"
+        elif choice == '6':
+            query = "SELECT * FROM EDUCATION;"
+        # Pages and subclasses
+        elif choice == '7':
+            query = "SELECT PAGE.page_id, PAGE.page_name, PAGE.owner_id, COUNT(LIKES.user_id) AS Number_of_Likes FROM PAGE LEFT OUTER JOIN LIKES ON PAGE.page_id = LIKES.page_id GROUP BY page_id"
+        elif choice == '8':
+            query = "SELECT * FROM BUSINESS_PLACE;"
+        elif choice == '9':
+            query = "SELECT * FROM PROD_BP;"
+        elif choice == '10':
+            query = "SELECT * FROM COMPANY;"
+        elif choice == '11':
+            query = "SELECT * FROM BRANCH_COMPANY;"
+        elif choice == '12':
+            query = "SELECT * FROM BRAND_PRODUCT;"
+        elif choice == '13':
+            query = "SELECT * FROM PUBLIC_FIGURE;"
+        elif choice == '14':
+            query = "SELECT * FROM NEWS_PUB_FIG;"
+        elif choice == '15':
+            query = "SELECT * FROM ENTERTAINMENT"
+        elif choice == '16':
+            query = "SELECT * FROM CAUSE_COMMUNITY"
+        # Pages over
+        elif choice == '17':
+            query = "SELECT social_media.GROUP.group_id, social_media.GROUP.group_name, social_media.GROUP.group_privacy, COUNT(BELONGS_TO.user_id) AS Number_of_Members FROM social_media.GROUP INNER JOIN BELONGS_TO ON social_media.GROUP.group_id = BELONGS_TO.group_id GROUP BY group_id"
+        # Relationships
+        elif choice == '18':
+            query = "SELECT * FROM COMMENTS;"
+        elif choice == '19':
+            query = "SELECT * FROM FOLLOWS;"
+        elif choice == '20':
+            query = "SELECT * FROM MAKES_GENERAL_REACT;"
+        elif choice == '21':
+            query = "SELECT * FROM LIKES"
+        elif choice == '22':
+            query = "SELECT * FROM BELONGS_TO"
+        elif choice == '23':
+            query = "SELECT * FROM IS_ADMIN"
+        elif choice == '24':
+            query = "SELECT * FROM IS_MODERATOR"
+        elif choice == '25':
+            query = "SELECT * FROM MAKES_A_REACT;"
+        elif choice == '26':
+            query = "SELECT * FROM MENTIONS;"
+        elif choice == '27':
+            query = "SELECT * FROM SENDS_SPECIFIC;"
+        elif choice == '28':
+            query = "SELECT * FROM SENDS_GENERAL"
+        elif choice == '29':
+            query = "SELECT * FROM RESPONDS"
+        elif choice == '30':
+            query = "SELECT * FROM SHARES"
+        elif choice == '31':
+            query = "SELECT * FROM IS_TAGGED;"
+        elif choice == '42':
+            break
+        else:
+            input("Invalid input, press enter to continue.")
+            continue
 
-    if choice == '1':
-        query = "SELECT * FROM USER;"
-    elif choice == '2':
-        query = "SELECT * FROM POST;"
-    elif choice == '3':
-        query = "SELECT * FROM STORIES;"
-    elif choice == '4':
-        query = "SELECT * FROM MESSAGE;"
-    elif choice == '5':
-        query = "SELECT * FROM PROFILE;"
-    elif choice == '6':
-        query = "SELECT * FROM EDUCATION;"
-    # Pages and subclasses
-    elif choice == '7':
-        query = "SELECT PAGE.page_id, PAGE.page_name, PAGE.owner_id, COUNT(LIKES.user_id) AS Number_of_Likes FROM PAGE LEFT OUTER JOIN LIKES ON PAGE.page_id = LIKES.page_id GROUP BY page_id"
-    elif choice == '8':
-        query = "SELECT * FROM BUSINESS_PLACE;"
-    elif choice == '9':
-        query = "SELECT * FROM PROD_BP;"
-    elif choice == '10':
-        query = "SELECT * FROM COMPANY;"
-    elif choice == '11':
-        query = "SELECT * FROM BRANCH_COMPANY;"
-    elif choice == '12':
-        query = "SELECT * FROM BRAND_PRODUCT;"
-    elif choice == '13':
-        query = "SELECT * FROM PUBLIC_FIGURE;"
-    elif choice == '14':
-        query = "SELECT * FROM NEWS_PUB_FIG;"
-    elif choice == '15':
-        query = "SELECT * FROM ENTERTAINMENT"
-    elif choice == '16':
-        query = "SELECT * FROM CAUSE_COMMUNITY"
-    # Pages over
-    elif choice == '17':
-        query = "SELECT social_media.GROUP.group_id, social_media.GROUP.group_name, social_media.GROUP.group_privacy, COUNT(BELONGS_TO.user_id) AS Number_of_Members FROM social_media.GROUP INNER JOIN BELONGS_TO ON social_media.GROUP.group_id = BELONGS_TO.group_id GROUP BY group_id"
-    # Relationships
-    elif choice == '18':
-        query = "SELECT * FROM COMMENTS;"
-    elif choice == '19':
-        query = "SELECT * FROM FOLLOWS;"
-    elif choice == '20':
-        query = "SELECT * FROM MAKES_GENERAL_REACT;"
-    elif choice == '21':
-        query = "SELECT * FROM LIKES"
-    elif choice == '22':
-        query = "SELECT * FROM BELONGS_TO"
-    elif choice == '23':
-        query = "SELECT * FROM IS_ADMIN"
-    elif choice == '24':
-        query = "SELECT * FROM IS_MODERATOR"
-    elif choice == '25':
-        query = "SELECT * FROM MAKES_A_REACT;"
-    elif choice == '26':
-        query = "SELECT * FROM MENTIONS;"
-    elif choice == '27':
-        query = "SELECT * FROM SENDS_SPECIFIC;"
-    elif choice == '28':
-        query = "SELECT * FROM SENDS_GENERAL"
-    elif choice == '29':
-        query = "SELECT * FROM RESPONDS"
-    elif choice == '30':
-        query = "SELECT * FROM SHARES"
-    elif choice == '31':
-        query = "SELECT * FROM IS_TAGGED;"
-    else:
-        print("You have entered an invalid option.")
-
-    try:
-        no_of_rows = cur.execute(query)
-    except Exception as e:
-        print(e)
-        print("\n\nError!\n")
-        return
-    
-    rows = cur.fetchall()
-    viewTable(rows)
-    con.commit()
+        try:
+            no_of_rows = cur.execute(query)
+            con.commit()
+            rows = cur.fetchall()
+            viewTable(rows) 
+            # print(rows)
+        except Exception as e:
+            con.rollback()
+            print(e)
+            print("\n\nError!\n")
+        input("Press enter to continue.")
 
 
 
@@ -2589,7 +2663,7 @@ while(1):
     # password = input("Password: ")
 
     username = 'root'
-    password = 'pavani@17'
+    password = 'blahblah'
 
     try:
         con = pymysql.connect(host='127.0.0.1',
@@ -2618,17 +2692,18 @@ while(1):
             tmp = sp.call('clear', shell=True)
             refreshDatabase()
             print("CHOOSE AN OPTION\n")
-            print("1.General View Options")
-            print("2.Insertion Options")
-            print("3.Deletion Options")
-            print("4.Modify Options")
-            print("5.Search")
-            print("6.User-specific View Options and Activity Report Generation")
-            print("7.Show Suggestions")
-            print("8.View Mutual Relationships")
-            print("9.Post-specific View Options")
-            print("10.Comment-specific View Options")
-            print("11.Quit")
+            print("1. General View Options")
+            print("2. Insertion Options")
+            print("3. Deletion Options")
+            print("4. Modify Options")
+            print("5. Search")
+            print("6. User-specific View Options and Activity Report Generation")
+            print("7. Show Suggestions")
+            print("8. View Mutual Relationships")
+            print("9. Post-specific View Options")
+            print("10. Comment-specific View Options")
+            print("11. See weekly report of the user.")
+            print("12. Quit")
             inp = input("\nENTER: ")
             if(inp == '1'):
                 viewOptions()
@@ -2646,7 +2721,9 @@ while(1):
                 postListing()
             elif(inp=='10'):
                 commentListing()
-            elif(inp == '11'):
+            elif inp == '11':
+                printWeeklyReport()
+            elif(inp == '12'):
                 exitflag = 1
                 print("Exiting.")
                 break
