@@ -22,7 +22,7 @@ def printWeeklyReport():
         con.rollback()
         print(e)
         return
-    # print(cur.fetchone())
+
     query = "select CAST(MAX(CAST(uptime as float)) as TIME) as 'MAXIMUM UPTIME'from USER;"
     try:
         cur.execute(query)
@@ -33,7 +33,7 @@ def printWeeklyReport():
         con.rollback()
         print(e)
         return
-    # print(cur.fetchall())
+
     query = "select CAST(AVG(CAST(uptime as float)) as TIME) as 'MEAN UPTIME' from USER;"
     try:
         cur.execute(query)
@@ -44,10 +44,8 @@ def printWeeklyReport():
         con.rollback()
         print(e)
         return
-    # print(cur.fetchall())
+
     query = """select CAST(AVG(CAST(med.uptime as float)) as TIME) as 'MEDIAN UPTIME' from (select @rowindex:=@rowindex + 1 as rowindex, USER.uptime from USER order by uptime) AS med where med.rowindex in (FLOOR(@rowindex/2), CEIL(@rowindex/2));"""
-    # print(query)
-    # con.autocommit()
     try:
         cur.execute("set@rowindex := -1;")
         con.commit()
@@ -58,8 +56,7 @@ def printWeeklyReport():
     except Exception as e:
         con.rollback()
         print(e)
-        # return
-    # print(cur.fetchall())
+
     query = "select stddev(uptime) as 'STANDARD DEVIATION OF UPTIME' from USER;"
     try:
         cur.execute(query)
@@ -70,7 +67,6 @@ def printWeeklyReport():
         con.rollback()
         print(e)
         return
-    # print(cur.fetchall())
 
 
 def search():
@@ -82,12 +78,14 @@ def search():
     print("3. Comment")
     print("4. Page")
     print("5. Group")
+
     try:
         search_param = int(input("Enter the number of the required domain: "))
     except Exception as e:
         print(e)
         print("Invalid domain type")
         return
+
     if search_param == 1:
         search_type = "USER"
         search_field = "name"
@@ -129,6 +127,7 @@ def generateReport():
         print(e)
         print("User ID must be a number")
         return
+        
     try:
 
         query = "SELECT * FROM USER WHERE user_id=%d" % (user_id)
@@ -873,14 +872,6 @@ def addUser():
 def addProfile():
     print("Enter the profile details of the user below.\n")
     profile = {}
-    # try:
-    #     query = "SELECT user_id FROM USER WHERE password='%s' AND name='%s' AND email='%s'" %(user['password'],user['name'],user['email'])
-    #     cur.execute(query)
-    #     profile["user_id"] = cur.fetchone()[0]
-    # except Exception as e:
-    #     cur.rollback()
-    #     print(e)
-    #     print("Something went wrong")
     profile['user_id'] = input("Enter user id of the user: ")
     profile['dob'] = input("Enter Date-of-Birth in YYYY-MM-DD format: ")
     profile['sex'] = input(
@@ -922,7 +913,6 @@ def addComment():
     row["text"] = input("Enter the comment: ")
     row["media"] = input("Enter the link to the media: ")
 
-    # Reminder: Do the following check in all valid places.
     if len(row["text"]) == 0 and len(row["media"]) == 0:
         print("You can't make an empty comment!")
         return
