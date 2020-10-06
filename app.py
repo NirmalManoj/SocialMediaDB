@@ -2645,6 +2645,32 @@ def updatePassword():
     return
 
 
+def updateUptime():
+    global cur
+    row = {}
+    row['user_id'] = input(
+        "Enter the user id of the user to update the uptime: ")
+    query = "SELECT * from USER where user_id=%(user_id)s;"
+    try:
+        cur.execute(query, row)
+        con.commit()
+        dic = {}
+        print(tabulate(cur.fetchall(), headers=dic, tablefmt='psql'))
+    except Exception as e:
+        print(e)
+        return
+    row['uptime'] = input("Enter the new uptime: ")
+
+    query = "update USER set uptime=%(uptime)s where user_id = %(user_id)s;"
+    try:
+        cur.execute(query, row)
+        con.commit()
+        dic = {}
+        print(tabulate(cur.fetchall(), headers=dic, tablefmt='psql'))
+    except Exception as e:
+        print(e)
+
+
 def updOptions():
     while(1):
         print("Select from the options below :")
@@ -2658,6 +2684,7 @@ def updOptions():
         print("8. Edit Group Info")
         print("9. Edit Profile ")
         print("10. Update Password")
+        print("11. Update the uptime of an user")
         print("42. Go Back")
 
         optn = input("Your option is : ")
@@ -2688,6 +2715,8 @@ def updOptions():
             updateProfile()
         elif optn == 10:
             updatePassword()
+        elif optn == 11:
+            updateUptime()
         elif optn == 42:
             return
         else:
