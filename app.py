@@ -1273,7 +1273,7 @@ def makeUserModerator():
         "Enter the ID of the user to make him an moderator of a group: ")
     row["group_id"] = input(
         "Enter the ID of the group for which user should be made an moderator of: ")
-        
+
     query = "SELECT * FROM BELONGS_TO where group_id=%(group_id)s and user_id=%(user_id)s;"
     if isNonEmptyQuery(query, row) == False:
         print("User doesn't belong to the group or invalid query.")
